@@ -1,3 +1,4 @@
+"use client"
 const addedMarkers = [];
 export function GetClusterMap(mapToken, data, div_id) {
     // Get user's current location (assuming the browser supports geolocation)

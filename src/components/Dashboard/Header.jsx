@@ -1,14 +1,17 @@
-// components/Header.js
+"use client"
 import Link from 'next/link';
 import SideDrawer from './SideDrawer';
+import { useSelector } from "react-redux";
 
 const Header = () => {
+  const user = useSelector((state)=>state.auth.user);
   return (
     <header className="bg-gradient-to-r from-slate-950 to-slate-500 text-white p-4 flex justify-between items-center shadow-md">
       <SideDrawer />
       <Link href="/services" className="text-2xl font-bold">Dashboard</Link>
       <nav className="hidden lg:flex space-x-4">
         <Link href="/" className="hover:text-gray-300 transition duration-300">Home</Link>
+        {user?.email}
         <Link href="/profile" className="hover:text-gray-300 transition duration-300">Profile</Link>
       </nav>
     </header>

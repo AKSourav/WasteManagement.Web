@@ -1,3 +1,4 @@
+"use client"
 import MainContent from '@/components/Dashboard/MainContent';
 import React from 'react';
 
