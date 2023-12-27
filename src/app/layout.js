@@ -1,8 +1,6 @@
 import { Inter, Roboto } from 'next/font/google'
 import './globals.css';
 import Navbar from '@/components/Navbar/Navbar';
-import Head from 'next/head';
-import APIProvider from '@/utils/API';
 import StoreProvider from '@/utils/redux/StoreProvider';
 const roboto= Roboto({
   weight:'400',
@@ -23,14 +21,12 @@ export default function RootLayout({ children }) {
       <body 
         // className={inter.className}
         >
-        <APIProvider>
         <StoreProvider>
           <Navbar />
           <div className='dark:bg-slate-700 dark:text-white'>
             {children}
           </div>
         </StoreProvider>
-        </APIProvider>
       </body>
     </html>
   )

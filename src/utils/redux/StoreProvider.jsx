@@ -1,11 +1,17 @@
 "use client"
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import { Provider } from 'react-redux'
 import store from './store'
 
 const StoreProvider = ({children}) => {
+  const [loadingCLient,setLoadingClient] = useState(true);
+  useEffect(()=>{
+    setLoadingClient(false);
+  },[])
   return (
-    <Provider store={store}>{children}</Provider>
+    <>
+      {!loadingCLient && <Provider store={store}>{children}</Provider>}
+    </>
   )
 }
 
