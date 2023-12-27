@@ -4,6 +4,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter, usePathname } from 'next/navigation';
 import Header from '../Dashboard/Header';
+import {useSelector, useDispatch} from 'react-redux'
+import { setLogout } from '@/utils/redux/features/authSlice';
 
 const Navbar = (props) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,6 +13,8 @@ const Navbar = (props) => {
   const router= useRouter();
   const pathname= usePathname();
   const routesToHide=["services"];
+  const dispatch= useDispatch();
+  const isAuthenticated= useSelector((state)=>state.auth.isAuthenticated);
 
   useEffect(()=>{
     if(window.matchMedia('(prefers-color-scheme: dark)').matches || localStorage.getItem('theme')==='dark')
@@ -87,8 +91,8 @@ const Navbar = (props) => {
           <Link href="/about" className="hover:text-slate-900 hover:dark:text-purple-200">About</Link>
           <Link href="/services" className="hover:text-slate-900 hover:dark:text-purple-200">Services</Link>
           <Link href="/contact" className="hover:text-slate-900 hover:dark:text-purple-200">Contact</Link>
-          {<button onClick={()=>router.replace('/auth')}  className="hover:text-gray- bg-green-400 p-2 rounded-md">SignIn</button>}
-          {/* {<button className="hover:bg-red-500 bg-red-400 p-2 text-slate-900 rounded-md">Log Out</button>} */}
+          {!isAuthenticated && <button onClick={()=>router.replace(`/auth?redirect=${pathname!='/auth'?pathname:'/'}`)}  className="hover:text-gray- bg-green-400 p-2 rounded-md">SignIn</button>}
+          {isAuthenticated && <button onClick={()=>dispatch(setLogout())} className="hover:bg-red-500 bg-red-400 p-2 text-slate-900 rounded-md">Log Out</button>}
         </div>
       </div>
 

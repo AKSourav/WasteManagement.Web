@@ -1,42 +1,18 @@
 "use client"
-import { useAxiosContext } from '@/utils/API';
 import { login, setUser } from '@/utils/redux/features/authSlice';
 import React, { useContext, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import Cookies from 'universal-cookie';
 
 const LoginTab = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  // const {apiClient,setRefreshToken,setAccessToken} = useAxiosContext();
   const dispatch = useDispatch();
   const user= useSelector((state)=>state.auth.user);
-  const cookies = new Cookies();
 
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
   };
-
-  // const handleLogin=async()=>{
-  //   try{
-  //     const {data}=await apiClient.post('/api/login/',{phone:phoneNumber,password:password});
-  //     console.log(data);
-  //     const user=data.user;
-  //     dispatch(setUser(user));
-  //     setRefreshToken(data.refresh);
-  //     setAccessToken(data.access);
-  //     // Set refresh cookie with a 90-day expiration
-  //     cookies.set('refresh', data.refresh, { path: '/', maxAge: 90 * 24 * 60 * 60 });
-
-  //     // Set access cookie with a 5-minute expiration
-  //     cookies.set('access', data.access, { path: '/', maxAge: 5 * 60 });
-  //   }
-  //   catch(error)
-  //   {
-  //     console.log(error);
-  //   }
-  // }
 
   const handleLogin=async()=>{
     try{
