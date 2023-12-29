@@ -69,7 +69,7 @@ const BingMap = ({ apiKey }) => {
   }, [apiKey]);
 
   return<>
-    <div id="bingMap" style={{ height: '100vh',zIndex:'0',overflow:'hidden' }}></div>
+    <div id="bingMap" style={{ height: '90vh',zIndex:'0',overflow:'hidden' }}></div>
     {/* <div id="directionsContainer"></div> */}
   </> 
 };

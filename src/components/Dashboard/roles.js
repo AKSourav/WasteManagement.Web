@@ -72,10 +72,6 @@ export const DWC=[
         path:"/record"
     },
     {
-        option:"Wallet",
-        path:"/wallet"
-    },
-    {
         option:"Setting",
         path:"/setting"
     },
@@ -100,10 +96,6 @@ export const SWC=[
     {
         option:"State Record",
         path:"/record"
-    },
-    {
-        option:"Wallet",
-        path:"/wallet"
     },
     {
         option:"Setting",

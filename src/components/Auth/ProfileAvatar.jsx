@@ -29,6 +29,7 @@ const ProfileAvatar = ({onLogout,className, user}) => {
       />
       {isDropdownOpen && (
         <div
+          style={{zIndex:99999999}}
           className="w-36 absolute top-12 right-0 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 p-2 rounded shadow-md"
           onMouseEnter={() => handleDropdownToggle(true)}
           onMouseLeave={() => handleDropdownToggle(false)}
