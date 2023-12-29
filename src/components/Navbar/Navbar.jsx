@@ -6,15 +6,16 @@ import { useRouter, usePathname } from 'next/navigation';
 import Header from '../Dashboard/Header';
 import {useSelector, useDispatch} from 'react-redux'
 import { setLogout } from '@/utils/redux/features/authSlice';
+import ProfileAvatar from '../Auth/ProfileAvatar';
 
 const Navbar = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [theme, setTheme] = useState("light");
   const router= useRouter();
   const pathname= usePathname();
-  const routesToHide=["services"];
+  const routesToHide=["dashboard"];
   const dispatch= useDispatch();
-  const isAuthenticated= useSelector((state)=>state.auth.isAuthenticated);
+  const {isAuthenticated,user}= useSelector((state)=>state.auth);
 
   useEffect(()=>{
     if(window.matchMedia('(prefers-color-scheme: dark)').matches || localStorage.getItem('theme')==='dark')
@@ -90,9 +91,10 @@ const Navbar = (props) => {
           <Link href="/map" className="hover:text-slate-900 hover:dark:text-purple-200">Map</Link>
           <Link href="/about" className="hover:text-slate-900 hover:dark:text-purple-200">About</Link>
           <Link href="/services" className="hover:text-slate-900 hover:dark:text-purple-200">Services</Link>
+          {isAuthenticated && <Link href="/dashboard" className="hover:text-slate-900 hover:dark:text-purple-200">Dashboard</Link>}
           <Link href="/contact" className="hover:text-slate-900 hover:dark:text-purple-200">Contact</Link>
-          {!isAuthenticated && <button onClick={()=>router.replace(`/auth?redirect=${pathname!='/auth'?pathname:'/'}`)}  className="hover:text-gray- bg-green-400 p-2 rounded-md">SignIn</button>}
-          {isAuthenticated && <button onClick={()=>dispatch(setLogout())} className="hover:bg-red-500 bg-red-400 p-2 text-slate-900 rounded-md">Log Out</button>}
+          {!isAuthenticated && <button onClick={()=>router.replace(`/auth`)}  className="hover:text-gray- bg-green-400 p-2 rounded-md">SignIn</button>}
+          {isAuthenticated && <ProfileAvatar user={user} onLogout={()=>dispatch(setLogout())}/>}
         </div>
       </div>
 
@@ -108,7 +110,7 @@ const Navbar = (props) => {
         </div>
       )}
     </nav>}
-    {pathname.split('/')[1]=="services" && <Header/>}
+    {pathname.split('/')[1]=="dashboard" && <Header/>}
     </>
   );
 };

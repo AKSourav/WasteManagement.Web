@@ -1,6 +1,7 @@
 "use client"
 import Cookies from 'universal-cookie';
 import axios from "axios";
+import {useDispatch} from 'react-redux';
 
 const apiClient = axios.create({ baseURL: "http://localhost:8000" });
 const cookies = new Cookies();

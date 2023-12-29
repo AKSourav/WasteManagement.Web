@@ -62,6 +62,9 @@ const authSlice = createSlice({
         cookies.remove('refresh', { path: '/' });
         cookies.remove('access', { path: '/' });
         localStorage.removeItem('user');
+        const router= action?.payload?.router || null;
+        if(router)
+          router.replace('/');
     },
   },
   extraReducers: (builder) => {

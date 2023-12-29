@@ -1,6 +1,7 @@
-// pages/auth.js
+"use client"
 import React from 'react';
 import AuthPage from '../../components/Auth/AuthPage';
+import withoutAuth from '@/utils/withoutAuth';
 
 const Auth = () => {
   return (
@@ -15,4 +16,4 @@ const Auth = () => {
   );
 };
 
-export default Auth;
+export default withoutAuth(Auth);

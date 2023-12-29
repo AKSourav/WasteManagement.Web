@@ -1,10 +1,10 @@
 "use client"
-import React, { useEffect } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import { GetClusterMap } from './Map';
 import './BingMap.css'
 
 const BingMap = ({ apiKey }) => {
-  useEffect(() => {
+  useLayoutEffect(() => {
     // Load Bing Maps API
     const script = document.createElement('script');
     script.type = 'text/javascript';
@@ -69,7 +69,7 @@ const BingMap = ({ apiKey }) => {
   }, [apiKey]);
 
   return<>
-    <div id="bingMap" style={{ height: '91vh',zIndex:'0',overflow:'hidden' }}></div>
+    <div id="bingMap" style={{ height: '100vh',zIndex:'0',overflow:'hidden' }}></div>
     {/* <div id="directionsContainer"></div> */}
   </> 
 };

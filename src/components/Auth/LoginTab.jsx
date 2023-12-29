@@ -18,6 +18,7 @@ const LoginTab = () => {
     try{
       const formValue={phone:phoneNumber,password:password};
       await dispatch(login({formValue}));
+      console.log('Loginned');
     }
     catch(error)
     {
@@ -27,7 +28,6 @@ const LoginTab = () => {
 
   return (
     <div>
-      phone:{user?.phone}
       <div className="mb-4">
         <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-600 dark:text-white">
           Phone Number
