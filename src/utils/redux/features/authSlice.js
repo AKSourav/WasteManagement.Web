@@ -32,10 +32,26 @@ export const register = createAsyncThunk(
   "auth/register",
   async ({ formValue }, { rejectWithValue }) => {
     try {
-      const { apiClient } = axiosContext();
       const { data } = await apiClient.post('/api/register/', formValue);
       return data.user;
     } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const getUser = createAsyncThunk(
+  "auth/getUser",
+  async (_, { rejectWithValue }) => {
+    try {
+      console.log("Yahooo!")
+      const refreshToken=cookies.get('refresh');
+      const { data } = await apiClient.get('/api/getuser/', {refresh:refreshToken});
+      console.log(data);
+      console.log("getUser:",data);
+      return data.user;
+    } catch (err) {
+      console.log(err);
       return rejectWithValue(err.response.data);
     }
   }
@@ -92,7 +108,12 @@ const authSlice = createSlice({
       .addCase(register.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload.message;
-      });
+      })
+      .addCase(getUser.fulfilled, (state, action) => {
+        localStorage.setItem('user', JSON.stringify(action.payload));
+        state.user = action.payload;
+      })
+      ;
   },
 });
 
