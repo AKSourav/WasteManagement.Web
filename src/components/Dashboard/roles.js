@@ -1,7 +1,7 @@
 export const USER=[
     {
-        option:"Map",
-        path:"/map"
+        option:"Create Order",
+        path:"/createorder"
     },
     {
         option:"Edit Profile",

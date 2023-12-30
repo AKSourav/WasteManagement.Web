@@ -20,7 +20,7 @@ const Wrapper = ({children}) => {
         if(isAuthenticated)
         {
             fetchData();
-            intervalThread=setInterval(fetchData,10000)
+            intervalThread=setInterval(fetchData,4*60*1000)
         }
         return()=>{
             clearInterval(intervalThread);
