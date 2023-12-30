@@ -20,6 +20,7 @@ const MicrosoftMaps = ({ coordinates, setCoordinates }) => {
 
         // Handle map click event to update pin coordinates
         window.Microsoft.Maps.Events.addHandler(map, 'click', function (e) {
+        console.log('map clicked');
         const newCoordinates = e.location;
         setPin(map, { lat: newCoordinates.latitude, lon: newCoordinates.longitude });
         });
@@ -45,8 +46,9 @@ const MicrosoftMaps = ({ coordinates, setCoordinates }) => {
       // Update the coordinates using setCoordinates when the pin is dragged
       window.Microsoft.Maps.Events.addHandler(pin, 'dragend', function (e) {
         // Check if e.entity is defined before accessing its properties
-        if (e.entity) {
-          const newCoordinates = e.entity.getLocation();
+        console.log('pin dragend',e.location);
+        if (e.location) {
+          const newCoordinates = e.location;
           setCoordinates({ lat: newCoordinates.latitude, lon: newCoordinates.longitude });
         }
       });
