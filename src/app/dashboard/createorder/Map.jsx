@@ -1,30 +1,37 @@
-import React, { useEffect, useRef, useState } from 'react';
+import Spinner from '@/utils/Spinner/Spinner';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
-const MicrosoftMaps = ({ coordinates, setCoordinates }) => {
+const MicrosoftMaps = ({ coordinates, setCoordinates,className }) => {
+  const [mapLoading,setMapLoading] = useState(true);
   const mapRef = useRef(null);
   const pinRef = useRef(null);
   const [map,setMap]=useState(null);
 
-  const loadMap =async () => {
-    
-    if(coordinates)
-    {
-      map.setView({
-          center: new window.Microsoft.Maps.Location(coordinates.lat, coordinates.lon),
-          zoom: 16,
-      });
-    
-
-        // Initialize the pin with the provided coordinates
-       setPin(map, coordinates);
-
-        // Handle map click event to update pin coordinates
-        window.Microsoft.Maps.Events.addHandler(map, 'click', function (e) {
-        console.log('map clicked');
-        const newCoordinates = e.location;
-        setPin(map, { lat: newCoordinates.latitude, lon: newCoordinates.longitude });
+  const loadMap =() => {
+    try {
+      if(coordinates && map)
+      {
+        map?.setView({
+            center: new window.Microsoft.Maps.Location(coordinates.lat, coordinates.lon),
+            zoom: 16,
         });
+      
+  
+          // Initialize the pin with the provided coordinates
+         setPin(map, coordinates);
+  
+          // Handle map click event to update pin coordinates
+          window.Microsoft.Maps.Events.addHandler(map, 'click', function (e) {
+            // console.log('map clicked',e);
+            const newCoordinates = e.location;
+            setCoordinates({ lat: newCoordinates.latitude, lon: newCoordinates.longitude });
+            setPin(map, { lat: newCoordinates.latitude, lon: newCoordinates.longitude });
+          });
+        }
+    } catch (error) {
+      console.log(error);
     }
+      setMapLoading(false);
   };
 
   const setPin = (map, coordinates) => {
@@ -45,15 +52,14 @@ const MicrosoftMaps = ({ coordinates, setCoordinates }) => {
     
       // Update the coordinates using setCoordinates when the pin is dragged
       window.Microsoft.Maps.Events.addHandler(pin, 'dragend', function (e) {
-        // Check if e.entity is defined before accessing its properties
-        console.log('pin dragend',e.location);
+        // console.log('pin dragend',e.location);
         if (e.location) {
           const newCoordinates = e.location;
           setCoordinates({ lat: newCoordinates.latitude, lon: newCoordinates.longitude });
         }
       });
     };    
-  useEffect(() => {
+  useLayoutEffect(() => {
     const script = document.createElement('script');
     script.type = 'text/javascript';
     script.src = `https://www.bing.com/api/maps/mapcontrol?key=${process.env.NEXT_PUBLIC_BING_MAPS_API_KEY}&callback=loadMapScenario`;
@@ -64,7 +70,6 @@ const MicrosoftMaps = ({ coordinates, setCoordinates }) => {
         const mapI = new window.Microsoft.Maps.Map(mapRef.current, { });
         setMap(mapI);
     };
-
     // Cleanup function to remove the Bing Maps script when the component is unmounted
     return () => {
       document.head.removeChild(script);
@@ -79,7 +84,18 @@ const MicrosoftMaps = ({ coordinates, setCoordinates }) => {
   },[map,coordinates,setCoordinates]);
 
 
-  return <div ref={mapRef} style={{ height: '400px' }} />;
+  return(
+    <>
+      <div ref={mapRef} className={`${className}`} />
+      {mapLoading && <div
+        className={`${className} flex justify-center items-center absolute top-6`}
+        style={{zIndex:999999999}}
+        >
+          <Spinner/>
+        </div>
+      }
+    </>
+  );
 };
 
 export default MicrosoftMaps;

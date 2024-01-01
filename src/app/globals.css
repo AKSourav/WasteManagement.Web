@@ -19,3 +19,33 @@
 body {
   
 }
+
+/* styles.css or your styles file */
+
+.glossy-button {
+  /* Base styles */
+  font-size: 16px;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out, transform 0.3s ease-in-out;
+
+  /* Gradient background */
+  background: linear-gradient(180deg, #4CAF50 0%, #45a049 100%);
+  color: #fff;
+
+  /* Rounded corners */
+  border-radius: 5px;
+
+  /* Box shadow for glossy effect */
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+}
+/* Hover effect */
+.glossy-button:hover {
+  background: linear-gradient(180deg, #45a049 0%, #4CAF50 100%);
+  transform: translateY(-2px);
+}
+/* Active state effect */
+.glossy-button:active {
+  transform: translateY(2px);
+}
