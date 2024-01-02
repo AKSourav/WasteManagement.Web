@@ -7,6 +7,8 @@ import Header from '../Dashboard/Header';
 import {useSelector, useDispatch} from 'react-redux'
 import { setLogout } from '@/utils/redux/features/authSlice';
 import ProfileAvatar from '../Auth/ProfileAvatar';
+import darkModeSVG from './darkMode.svg'
+import lightModeSVG from './lightMode.svg'
 
 const Navbar = (props) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -61,7 +63,7 @@ const Navbar = (props) => {
           </Link>
           <Image
             className='m-2 cursor-pointer'
-            src={(theme==="dark")?'darkMode.svg':'lightMode.svg'}
+            src={(theme==="dark")?darkModeSVG:lightModeSVG}
             alt="Light/Dark Mode"
             width={23}
             height={23}

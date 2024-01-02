@@ -13,6 +13,8 @@ const ProfileAvatar = ({onLogout,className, user}) => {
     switch(option){
       case 'Profile':router.push('/profile');
                      break;
+      case 'Settings':router.push('/settings');
+                     break;
     }
     setDropdownOpen(false);
   };
@@ -40,12 +42,12 @@ const ProfileAvatar = ({onLogout,className, user}) => {
           >
             Hello, {user?.email?.split('@')[0]}
           </button>
-          {/* <button
+          <button
             className="block w-full text-left py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-300"
-            onClick={() => handleOptionSelect('Profile')}
+            onClick={() => handleOptionSelect('Settings')}
           >
-            Profile
-          </button> */}
+            Settings
+          </button>
           <button
             className="block w-full text-left py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-300"
             onClick={onLogout}

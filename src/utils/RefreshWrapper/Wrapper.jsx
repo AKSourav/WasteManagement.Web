@@ -2,6 +2,11 @@
 import React, { useEffect} from 'react';
 import {useSelector,useDispatch} from 'react-redux';
 import { getUser } from '../redux/features/authSlice';
+import toast, { Toaster } from 'react-hot-toast';
+
+export const useToast= ()=>{
+    return toast;
+}
 
 const Wrapper = ({children}) => {
     const {isAuthenticated} = useSelector((state)=>state.auth);
@@ -29,6 +34,7 @@ const Wrapper = ({children}) => {
   return (
     <>
         {children}
+        <Toaster/>
     </>
   )
 }

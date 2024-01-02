@@ -20,8 +20,8 @@ export const USER=[
         path:"/wallet"
     },
     {
-        option:"Setting",
-        path:"/setting"
+        option:"Settings",
+        path:"/settings"
     },
 ];
 export const WC=[
@@ -46,8 +46,8 @@ export const WC=[
         path:"/wallet"
     },
     {
-        option:"Setting",
-        path:"/setting"
+        option:"Settings",
+        path:"/settings"
     },
     {
         option:"District Manager",
@@ -72,8 +72,8 @@ export const DWC=[
         path:"/record"
     },
     {
-        option:"Setting",
-        path:"/setting"
+        option:"Settings",
+        path:"/settings"
     },
     {
         option:"State Manager",
@@ -98,8 +98,8 @@ export const SWC=[
         path:"/record"
     },
     {
-        option:"Setting",
-        path:"/setting"
+        option:"Settings",
+        path:"/settings"
     }
 ];
 
