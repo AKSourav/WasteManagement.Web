@@ -2,6 +2,23 @@
 import apiClient from "@/utils/apiClient";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
+export const getAddress = createAsyncThunk(
+    "address/all",
+    async ({toast }, { rejectWithValue }) => {
+      let toastId;
+      try {
+        if (toast) {
+          toastId = toast.loading("Getting Address");
+        }
+        const { data } = await apiClient.get('/api/address/');
+        if (toast) toast.success("Success", { id: toastId });
+        return data;
+      } catch (err) {
+        if (toast) toast.error("Error occurred!", { id: toastId });
+        return rejectWithValue(err.response.data);
+      }
+    }
+  );
 export const addAddress = createAsyncThunk(
     "address/add",
     async ({ formValue, toast }, { rejectWithValue }) => {
@@ -21,11 +38,35 @@ export const addAddress = createAsyncThunk(
   );
 export const editAddress = createAsyncThunk(
     "address/edit",
-    async ({ formValue }, { rejectWithValue }) => {
+    async ({ formValue,id, toast,close }, { rejectWithValue }) => {
+      let toastId;
       try {
-        const { data } = await apiClient.put('/api/address/', formValue);
+        if (toast) {
+          toastId = toast.loading("Editing Address");
+        }
+        const { data } = await apiClient.put(`/api/address/${id}/`, formValue);
+        if (toast) toast.success("Successfully Edited", { id: toastId });
+        if(close) close();
         return data;
       } catch (err) {
+        if (toast) toast.error("Error occurred!", { id: toastId });
+        return rejectWithValue(err.response.data);
+      }
+    }
+  );
+export const deleteAddress = createAsyncThunk(
+    "address/delete",
+    async ({id, toast }, { rejectWithValue }) => {
+      let toastId;
+      try {
+        if (toast) {
+          toastId = toast.loading("Deleting Address");
+        }
+        const { data } = await apiClient.delete(`/api/address/${id}/`);
+        if (toast) toast.success("Successfully Deleted", { id: toastId });
+        return data;
+      } catch (err) {
+        if (toast) toast.error("Error occurred!", { id: toastId });
         return rejectWithValue(err.response.data);
       }
     }
@@ -47,6 +88,18 @@ const addressSlice= createSlice({
     },
     extraReducers: (builder)=>{
         builder
+            .addCase(getAddress.pending,(state)=>{
+                state.loading=true;
+            })
+            .addCase(getAddress.fulfilled,(state,action)=>{
+                state.loading=false;
+                state.all=action.payload;
+                state.error=null
+            })
+            .addCase(getAddress.rejected,(state,action)=>{
+                state.loading=false;
+                state.error=action.payload.message
+            })
             .addCase(addAddress.pending,(state)=>{
                 state.loading=true;
             })
@@ -74,6 +127,11 @@ const addressSlice= createSlice({
                 state.loading=false;
                 state.error=action.payload.message
             })
+            .addCase(deleteAddress.fulfilled,(state,action)=>{
+              state.all=state.all.filter((item)=>{
+                if(item.id!=action.payload.id) return item;
+            });
+            })            
     }
 })
 

@@ -4,17 +4,17 @@ import _ from 'lodash';
 const GridView = ({ data, onSelect, onEdit, onDelete }) => {
   return (
     <div className="flex flex-col items-center justify-start w-full">
-      {data.map((item, index) => (
-        <div key={index} className="p-3 border border-gray-300 rounded mb-4 w-full max-w-lg">
-          <div onClick={() => onSelect({ item, index })} className="cursor-pointer">
+      {data?.map((item, index) => (
+        <div key={index} className="p-7 border border-gray-300 bg-slate-200 transition-all hover:bg-slate-300 dark:bg-slate-900 dark:hover:bg-slate-950 rounded m-2 mt-0 w-full">
+          <div onClick={() => onSelect?onSelect({ item, index }):null} className="cursor-pointer flex flex-wrap  justify-between w-full">
             {Object.keys(item).map((key, idx) => (
               <div key={idx} className="mb-2">
                 <h3 className="text-lg font-semibold">{_.startCase(key)}</h3>
-                <p className="text-gray-700">{item[key]}</p>
+                <p className="text-gray-700 dark:text-slate-100">{item[key]}</p>
               </div>
             ))}
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-end pr-8">
             {onEdit && (
               <button
                 onClick={() => onEdit({ item, index })}

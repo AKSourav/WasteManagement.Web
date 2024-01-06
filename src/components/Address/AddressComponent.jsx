@@ -1,23 +1,22 @@
 "use client"
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import MicrosoftMaps from './Map';
-import { useToast } from '@/utils/RefreshWrapper/Wrapper';
 import {useDispatch} from 'react-redux';
 import { addAddress } from '@/utils/redux/features/addressSlice';
 import {toast,Toaster} from 'react-hot-toast';
 
-const AddressInput = ({data}) => {
+const AddressInput = ({data,handleSubmit}) => {
   const [countryRegion, setCountryRegion] = useState(data?.country || '');
   const [state, setState] = useState(data?.state ||'');
-  const [district, setDistrict] = useState(data?.district ||'');
+  const [district, setDistrict] = useState(data?.district || data?.city || '');
   const [postalCode, setPostalCode] = useState(data?.pincode ||'');
   const [addressLine, setAddressLine] = useState(data?.address ||'');
-  const [coordinates, setCoordinates] = useState(data?.coordinates || null);
+  const [coordinates, setCoordinates] = useState(data?{lat:Number(data?.lattitude),lon:Number(data?.longitude)}: null);
 
   const [loading,setLoading] = useState();
   const dispatch =useDispatch();
 
-  const handleSubmit=async ()=>{
+  const handleClickSubmit=async ()=>{
     setLoading(true);
     const formData= new FormData();
     formData.append('country',countryRegion);
@@ -27,12 +26,14 @@ const AddressInput = ({data}) => {
     formData.append('address',addressLine);
     formData.append('lattitude',coordinates.lat);
     formData.append('longitude',coordinates.lon);
-    await dispatch(addAddress({formValue:formData,toast}))
-    // toast.promise(myPromise, {
-    //   loading: 'Loading',
-    //   success: 'Got the data',
-    //   error: 'Error when fetching',
-    // });
+    if(data)
+    {
+      await handleSubmit(formData,data?.id);
+    }
+    else
+    {
+      await handleSubmit(formData);
+    }
     setLoading(false);
   }
 
@@ -129,6 +130,7 @@ const AddressInput = ({data}) => {
 }
 
 useLayoutEffect(() => {
+  if(!coordinates)
   fetchUserLocation();
 }, []);
 
@@ -144,9 +146,9 @@ useEffect(()=>{
 
   return (
     <div className='p-3 dark:bg-slate-900'>
-      {loading?"Loading":"No"}
       <Toaster/>
       <MicrosoftMaps className={'w-full h-72'} coordinates={coordinates} setCoordinates={setCoordinates} />
+      {/* lat:{coordinates?.lat} lon:{coordinates?.lon} */}
       <div className="p-6 dark:bg-slate-800 bg-slate-300 rounded text-dark">
         <h1 className="text-2xl font-bold mb-4 text-center dark:text-slate-300 text-slate-900">Fill Your Complete Address</h1>
         <div className="grid grid-cols-2 gap-4">
@@ -222,7 +224,7 @@ useEffect(()=>{
           <button
             className={`px-4 py-2 bg-green-500 dark:text-slate-900 rounded hover:bg-green-600 font-semibold ${!coordinates ? "opacity-50" : ""}`}
             disabled={!coordinates}
-            onClick={handleSubmit}
+            onClick={handleClickSubmit}
           >
             Submit
           </button>
