@@ -30,11 +30,17 @@ export const login = createAsyncThunk(
 
 export const register = createAsyncThunk(
   "auth/register",
-  async ({ formValue }, { rejectWithValue }) => {
+  async ({ formValue,toast }, { rejectWithValue }) => {
+    let toastId;
     try {
-      const { data } = await apiClient.post('/api/register/', formValue);
+      if (toast) {
+        toastId = toast.loading("Getting Address");
+      }
+      const { data } = await apiClient.post('/api/registerUser/', formValue);
+      if (toast) toast.success("Success", { id: toastId });
       return data.user;
     } catch (err) {
+      if (toast) toast.error(`Error occurred! ${err.response?.data?.message}`, { id: toastId });
       return rejectWithValue(err.response.data);
     }
   }
