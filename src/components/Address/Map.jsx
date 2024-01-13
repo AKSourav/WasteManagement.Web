@@ -12,16 +12,15 @@ const MicrosoftMaps = ({ coordinates, setCoordinates,className }) => {
       if(coordinates && map)
       {
         map?.setView({
-            center: new window.Microsoft.Maps.Location(coordinates.lat, coordinates.lon),
-            zoom: 19,
+          center: new window.Microsoft.Maps.Location(coordinates.lat, coordinates.lon),
+          zoom: 19,
         });
-      
-  
+        
           // Initialize the pin with the provided coordinates
          setPin(map, coordinates);
   
           // Handle map click event to update pin coordinates
-          window.Microsoft.Maps.Events.addHandler(map, 'click', function (e) {
+          setCoordinates && window.Microsoft.Maps.Events.addHandler(map, 'click', function (e) {
             // console.log('map clicked',e);
             const newCoordinates = e.location;
             setCoordinates({ lat: newCoordinates.latitude, lon: newCoordinates.longitude });
@@ -43,7 +42,7 @@ const MicrosoftMaps = ({ coordinates, setCoordinates,className }) => {
       // Create a new pin at the specified coordinates
       const pin = new window.Microsoft.Maps.Pushpin(
         new window.Microsoft.Maps.Location(coordinates.lat, coordinates.lon),
-        { draggable: true }
+        { draggable: setCoordinates?true:false }
       );
     
       // Add pin to the map
@@ -51,7 +50,7 @@ const MicrosoftMaps = ({ coordinates, setCoordinates,className }) => {
       pinRef.current = pin;
     
       // Update the coordinates using setCoordinates when the pin is dragged
-      window.Microsoft.Maps.Events.addHandler(pin, 'dragend', function (e) {
+      setCoordinates && window.Microsoft.Maps.Events.addHandler(pin, 'dragend', function (e) {
         // console.log('pin dragend',e.location);
         if (e.location) {
           const newCoordinates = e.location;

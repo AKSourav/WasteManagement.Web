@@ -1,10 +1,10 @@
 import React from 'react';
 
-const Modal = ({ isOpen, onClose, children, title }) => {
+const Modal = ({ isOpen, onClose, children, title ,className}) => {
   return (
     <>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none dark:text-slate-300">
+        <div style={{zIndex:999999999}} className={"fixed inset-0 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none dark:text-slate-300 w-full "+className}>
           <div className="relative w-full h-full">
             {/* Modal content */}
             <div className="w-full h-full relative flex flex-col bg-white dark:bg-slate-950 border-2 border-gray-300 rounded-md shadow-md">

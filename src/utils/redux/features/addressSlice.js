@@ -129,7 +129,7 @@ const addressSlice= createSlice({
             })
             .addCase(deleteAddress.fulfilled,(state,action)=>{
               state.all=state.all.filter((item)=>{
-                if(item.id!=action.payload.id) return item;
+                if(item.saved_address_id!=action.payload.id) return item;
             });
             })            
     }

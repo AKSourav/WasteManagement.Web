@@ -3,7 +3,6 @@ import React, { useEffect, useLayoutEffect, useState } from 'react';
 import MicrosoftMaps from './Map';
 import {useDispatch,useSelector} from 'react-redux';
 import { addAddress } from '@/utils/redux/features/addressSlice';
-import {toast,Toaster} from 'react-hot-toast';
 
 const AddressInput = ({data,handleSubmit}) => {
   const [countryRegion, setCountryRegion] = useState(data?.country || '');
@@ -151,7 +150,6 @@ useEffect(()=>{
 
   return (
     <div className='p-3 dark:bg-slate-900'>
-      <Toaster/>
       <MicrosoftMaps className={'w-full h-72'} coordinates={coordinates} setCoordinates={setCoordinates} />
       {/* lat:{coordinates?.lat} lon:{coordinates?.lon} */}
       Here:{loading?"aa":"nn"}
