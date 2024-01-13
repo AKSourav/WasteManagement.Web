@@ -46,7 +46,7 @@ export const getUser = createAsyncThunk(
     try {
       console.log("Yahooo!")
       const refreshToken=cookies.get('refresh');
-      const { data } = await apiClient.get('/api/getuser/', {refresh:refreshToken});
+      const { data } = await apiClient.get('/api/getUser/', {refresh:refreshToken});
       console.log(data);
       console.log("getUser:",data);
       return data.user;

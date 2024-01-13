@@ -118,7 +118,7 @@ const addressSlice= createSlice({
             .addCase(editAddress.fulfilled,(state,action)=>{
                 state.loading=false;
                 state.all=state.all.map((item)=>{
-                    if(item.id==action.payload.id) return action.payload;
+                    if(item.saved_address_id==action.payload.saved_address_id) return action.payload;
                     else return item;
                 });
                 state.error=null

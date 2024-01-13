@@ -28,7 +28,7 @@ const AddressPage = () => {
     setIsEditModalOpen(true);
   };
   const handleDelete = ({item,index}) => {
-    dispatch(deleteAddress({id:addressList[index].id,toast}));
+    dispatch(deleteAddress({id:addressList[index].saved_address_id,toast}));
   };
 
   const handleCloseEditModal = () => {
@@ -54,7 +54,7 @@ const AddressPage = () => {
 
   return (
     <div className='pt-20 h-screen'>
-      <GridView data={addressList.map((item)=>{
+      <GridView data={addressList?.map((item)=>{
           const {id,saved_address_id,customer_ref,lattitude,longitude,...rest}= item;
           return rest;
         })} 

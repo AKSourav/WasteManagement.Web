@@ -1,19 +1,21 @@
 "use client"
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import MicrosoftMaps from './Map';
-import {useDispatch} from 'react-redux';
+import {useDispatch,useSelector} from 'react-redux';
 import { addAddress } from '@/utils/redux/features/addressSlice';
 import {toast,Toaster} from 'react-hot-toast';
 
 const AddressInput = ({data,handleSubmit}) => {
   const [countryRegion, setCountryRegion] = useState(data?.country || '');
   const [state, setState] = useState(data?.state ||'');
-  const [district, setDistrict] = useState(data?.district || data?.city || '');
+  const [district, setDistrict] = useState(data?.district || '');
+  const [locality, setLocality] = useState(data?.locality || '');
   const [postalCode, setPostalCode] = useState(data?.pincode ||'');
   const [addressLine, setAddressLine] = useState(data?.address ||'');
   const [coordinates, setCoordinates] = useState(data?{lat:Number(data?.lattitude),lon:Number(data?.longitude)}: null);
 
-  const [loading,setLoading] = useState();
+  // const {loading} = useSelector((state)=>state.savedAddress);
+  const[loading,setLoading]= useState(false);
   const dispatch =useDispatch();
 
   const handleClickSubmit=async ()=>{
@@ -22,13 +24,14 @@ const AddressInput = ({data,handleSubmit}) => {
     formData.append('country',countryRegion);
     formData.append('state',state);
     formData.append('district',district);
+    formData.append('locality',locality);
     formData.append('pincode',postalCode);
     formData.append('address',addressLine);
     formData.append('lattitude',coordinates.lat);
     formData.append('longitude',coordinates.lon);
     if(data)
     {
-      await handleSubmit(formData,data?.id);
+      await handleSubmit(formData,data?.saved_address_id);
     }
     else
     {
@@ -36,7 +39,7 @@ const AddressInput = ({data,handleSubmit}) => {
     }
     setLoading(false);
   }
-
+  
   const fetchUserLocation=async ()=>{
     if (navigator.geolocation) {
         const options = {
@@ -63,7 +66,7 @@ const AddressInput = ({data,handleSubmit}) => {
 
   
   const handleSearch = async () => {
-    const apiUrl = `http://dev.virtualearth.net/REST/v1/Locations?countryRegion=${countryRegion}&adminDistrict=${state}&locality=${district}&postalCode=${postalCode}&addressLine=${addressLine}&key=${process.env.NEXT_PUBLIC_BING_MAPS_API_KEY}`;
+    const apiUrl = `http://dev.virtualearth.net/REST/v1/Locations?countryRegion=${countryRegion}&adminDistrict=${state}&locality=${locality}&postalCode=${postalCode}&addressLine=${addressLine}&key=${process.env.NEXT_PUBLIC_BING_MAPS_API_KEY}`;
     
     try {
       const response = await fetch(apiUrl);
@@ -106,8 +109,8 @@ const AddressInput = ({data,handleSubmit}) => {
     }
   };
   
-  // Example of using OpenStreetMap Nominatim API for reverse geocoding
-  const  getCountryStateDistrictFromCoordinates= async (lat, lon) =>{
+// Example of using OpenStreetMap Nominatim API for reverse geocoding
+const  getCountryStateDistrictFromCoordinates= async (lat, lon) =>{
   const apiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
   
   try {
@@ -118,11 +121,13 @@ const AddressInput = ({data,handleSubmit}) => {
     const country = address.country;
     const state = address.state;
     const postalCode= address.postcode;
-    const district = address.city || address.county; // Adjust as needed
-    console.log(data);
+    const city = address.city || address.town || address.county; // Adjust as needed
+    // const district= address
+    console.log("address from geo:",data);
     setCountryRegion(country);
     setState(state);
-    setDistrict(district);
+    setLocality(city);
+    // setDistrict(district);
     setPostalCode(postalCode);
   } catch (error) {
     console.error('Error fetching geolocation data:', error);
@@ -149,6 +154,7 @@ useEffect(()=>{
       <Toaster/>
       <MicrosoftMaps className={'w-full h-72'} coordinates={coordinates} setCoordinates={setCoordinates} />
       {/* lat:{coordinates?.lat} lon:{coordinates?.lon} */}
+      Here:{loading?"aa":"nn"}
       <div className="p-6 dark:bg-slate-800 bg-slate-300 rounded text-dark">
         <h1 className="text-2xl font-bold mb-4 text-center dark:text-slate-300 text-slate-900">Fill Your Complete Address</h1>
         <div className="grid grid-cols-2 gap-4">
@@ -159,7 +165,7 @@ useEffect(()=>{
               className="mt-1 p-2 w-full border border-dark rounded bg-dark dark:text-slate-900"
               placeholder="Enter Country/Region"
               value={countryRegion}
-              onChange={(e) => setCountryRegion(e.target.value)}
+              onChange={(e) => {setCountryRegion(e.target.value);setCoordinates(null)}}
             />
           </div>
           <div>
@@ -169,19 +175,31 @@ useEffect(()=>{
               className="mt-1 p-2 w-full border border-dark rounded bg-dark dark:text-slate-900"
               placeholder="Enter Admin District"
               value={state}
+              readOnly={true}
               onChange={(e) => setState(e.target.value)}
             />
           </div>
         </div>
         <div className="grid grid-cols-2 gap-4 mt-4">
           <div>
-            <label className="block text-sm font-medium text-gray-400">District/City<span className='text-red-700 font-extrabold'>*</span></label>
+            <label className="block text-sm font-medium text-gray-400">District<span className='text-red-700 font-extrabold'>*</span></label>
             <input
               type="text"
               className="mt-1 p-2 w-full border border-dark rounded bg-dark dark:text-slate-900"
               placeholder="Enter District"
               value={district}
+              readOnly={true}
               onChange={(e) => setDistrict(e.target.value)}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-400">City/Locality<span className='text-red-700 font-extrabold'>*</span></label>
+            <input
+              type="text"
+              className="mt-1 p-2 w-full border border-dark rounded bg-dark dark:text-slate-900"
+              placeholder="Enter Locality"
+              value={locality}
+              onChange={(e) => {setLocality(e.target.value),setCoordinates(null)}}
             />
           </div>
           <div>
@@ -191,7 +209,7 @@ useEffect(()=>{
               className="mt-1 p-2 w-full border border-dark rounded bg-dark dark:text-slate-900"
               placeholder="Enter Postal Code"
               value={postalCode}
-              onChange={(e) => setPostalCode(e.target.value)}
+              onChange={(e) => {setCoordinates(null);setPostalCode(e.target.value)}}
               required
             />
           </div>
@@ -222,8 +240,8 @@ useEffect(()=>{
             </button>
           </div>
           <button
-            className={`px-4 py-2 bg-green-500 dark:text-slate-900 rounded hover:bg-green-600 font-semibold ${!coordinates ? "opacity-50" : ""}`}
-            disabled={!coordinates}
+            className={`px-4 py-2 bg-green-500 dark:text-slate-900 rounded hover:bg-green-600 font-semibold ${(!coordinates || loading) ? "opacity-50" : ""}`}
+            disabled={!coordinates || loading}
             onClick={handleClickSubmit}
           >
             Submit

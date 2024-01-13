@@ -7,9 +7,10 @@ export async function GET(request)
     const pincodeUrl = `http://www.postalpincode.in/api/pincode/${postalCode}`;
 
     try {
+        console.log(postalCode);
       const pincodeResponse = await fetch(pincodeUrl);
       const pincodeData = await pincodeResponse.json();
-
+        console.log(pincodeData);
         return NextResponse.json(pincodeData);
 
     } catch (error) {
