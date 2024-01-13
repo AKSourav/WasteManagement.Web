@@ -8,11 +8,13 @@ import { addAddress, deleteAddress, editAddress, getAddress, setCurrentAddress }
 import { useToast } from '@/utils/RefreshWrapper/Wrapper';
 import GridView from '@/components/GridView/Gridview';
 import MicrosoftMaps from '../Address/Map';
+import { createOrder } from '@/utils/redux/features/orderSlice';
 
 const CreateOrder = ({handleCloseCreateOrder}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editFormData, setEditFormData] = useState(null);
+  const [optional_phone, setOptionalPhone] = useState(null);
   const {all:addressList,current:selectedAddress}=useSelector(state=>state.savedAddress);
   const dispatch= useDispatch();
   const toast = useToast();
@@ -50,6 +52,11 @@ const CreateOrder = ({handleCloseCreateOrder}) => {
   }
 
   const handleSubmit=async ()=>{
+    const formValue={
+        optional_phone,
+        ...selectedAddress
+    }
+    await dispatch(createOrder({formValue,toast}));
     handleCloseCreateOrder();
   }
 
@@ -78,7 +85,17 @@ const CreateOrder = ({handleCloseCreateOrder}) => {
                     lat:selectedAddress?.lattitude,
                     lon:selectedAddress?.longitude
                 }}/>
-                <div className='flex items-center mt-11'>
+                <div className='flex justify-center items-center mt-2'>
+                    <label className="block font-extrabold text-gray-400 p-2">Phone Number:</label>
+                    <input
+                    type="text"
+                    className="mt-1 p-2 border border-dark rounded bg-dark dark:text-slate-300 bg-transparent"
+                    placeholder="Optional Phone"
+                    value={optional_phone}
+                    onChange={(e) => {setOptionalPhone(e.target.value)}}
+                    />
+                </div>
+                <div className='flex items-center mt-2'>
                     <GridView className={"w-full"} data={[selectedAddress]?.map((item)=>{
                         const {id,saved_address_id,customer_ref,lattitude,longitude,...rest}= item;
                         return rest;

@@ -1,9 +1,5 @@
 export const USER=[
     {
-        option:"Create Order",
-        path:"/createorder"
-    },
-    {
         option:"Edit Profile",
         path:"/profile"
     },

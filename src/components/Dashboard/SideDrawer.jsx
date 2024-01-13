@@ -36,9 +36,9 @@ const SideDrawer = () => {
           ✕
         </button>
         <div className='flex flex-col justify-between mt-3'>
-          <button className='bg-slate-950 text-slate-300 rounded p-2' onClick={handleOpenCreateOrder}>
+          {user?.user_type==="USER" && <button className='bg-slate-950 text-slate-300 rounded p-2 mb-3' onClick={handleOpenCreateOrder}>
               Create Order
-          </button>
+          </button>}
           <Modal className={"w-screen max-h-full"} title={"Create Order"} isOpen={openCreateOrder} onClose={handleCloseCreateOrder}>
             <CreateOrder handleCloseCreateOrder={handleCloseCreateOrder}/>
           </Modal>

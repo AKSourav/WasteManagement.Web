@@ -152,7 +152,6 @@ useEffect(()=>{
     <div className='p-3 dark:bg-slate-900'>
       <MicrosoftMaps className={'w-full h-72'} coordinates={coordinates} setCoordinates={setCoordinates} />
       {/* lat:{coordinates?.lat} lon:{coordinates?.lon} */}
-      Here:{loading?"aa":"nn"}
       <div className="p-6 dark:bg-slate-800 bg-slate-300 rounded text-dark">
         <h1 className="text-2xl font-bold mb-4 text-center dark:text-slate-300 text-slate-900">Fill Your Complete Address</h1>
         <div className="grid grid-cols-2 gap-4">
