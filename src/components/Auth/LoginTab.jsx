@@ -1,4 +1,5 @@
 "use client"
+import { useToast } from '@/utils/RefreshWrapper/Wrapper';
 import { login, setUser } from '@/utils/redux/features/authSlice';
 import React, { useContext, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
@@ -9,6 +10,7 @@ const LoginTab = () => {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const user= useSelector((state)=>state.auth.user);
+  const toast = useToast();
 
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
@@ -17,7 +19,7 @@ const LoginTab = () => {
   const handleLogin=async()=>{
     try{
       const formValue={phone:phoneNumber,password:password};
-      await dispatch(login({formValue}));
+      await dispatch(login({formValue,toast}));
       console.log('Loginned');
     }
     catch(error)

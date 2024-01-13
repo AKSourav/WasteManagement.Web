@@ -12,7 +12,7 @@ const Header = () => {
   const dispatch= useDispatch();
   const router = useRouter();
   return (
-    <header className="bg-gradient-to-r from-slate-950 to-slate-500 text-white p-4 flex justify-between items-center shadow-md">
+    <header style={{zIndex:999999999}} className="top-0 fixed w-screen bg-gradient-to-r from-slate-950 to-slate-500 text-white p-4 flex justify-between items-center shadow-md">
       <SideDrawer />
       <Link href="/dashboard" className="text-2xl font-bold">Dashboard</Link>
       <nav className="flex justify-center items-center space-x-4">

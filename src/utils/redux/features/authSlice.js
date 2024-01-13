@@ -9,10 +9,15 @@ const cookies = new Cookies();
 // using Custom Hooks breaks in Thunk API breaks rule so i am not using Thunk API
 export const login = createAsyncThunk(
   "auth/login",
-  async ({ formValue }, { rejectWithValue }) => {
+  async ({ formValue, toast }, { rejectWithValue }) => {
+    let toastId;
     try {
+      if (toast) {
+        toastId = toast.loading("Logging You!");
+      }
       const { data } = await apiClient.post('/api/login/', formValue);
       console.log("Login Data:",data);
+      if (toast) toast.success("Success", { id: toastId });
 
       // Set refresh cookie with a 90-day expiration
       cookies.set('refresh', data.refresh, { path: '/', maxAge: 90 * 24 * 60 * 60 });
@@ -22,7 +27,8 @@ export const login = createAsyncThunk(
 
       return data.user;
     } catch (err) {
-        console.log(err);
+      console.log(err);
+      if (toast) toast.error(`Error occurred! ${err.response?.data?.message}`, { id: toastId });
       return rejectWithValue(err.response.data);
     }
   }
@@ -34,10 +40,10 @@ export const register = createAsyncThunk(
     let toastId;
     try {
       if (toast) {
-        toastId = toast.loading("Getting Address");
+        toastId = toast.loading("Registering User");
       }
       const { data } = await apiClient.post('/api/registerUser/', formValue);
-      if (toast) toast.success("Success", { id: toastId });
+      if (toast) toast.success("Successfully Registered! Please verify email and phone+", { id: toastId });
       return data.user;
     } catch (err) {
       if (toast) toast.error(`Error occurred! ${err.response?.data?.message}`, { id: toastId });

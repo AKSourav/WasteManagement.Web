@@ -20,7 +20,7 @@ const SideDrawer = () => {
         ☰
       </button>
 
-      <nav className={`z-10 lg:flex lg:flex-col lg:w-64 bg-gray-800 text-white p-4 fixed top-0 left-0 h-full transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out`}>
+      <nav style={{zIndex:999999999}} className={`lg:flex lg:flex-col lg:w-64 bg-gray-800 text-white p-4 fixed top-0 left-0 h-full transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out`}>
         <button className="text-2xl" onClick={toggleDrawer}>
           ✕
         </button>
