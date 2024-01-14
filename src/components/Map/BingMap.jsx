@@ -3,7 +3,7 @@ import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { GetClusterMap } from './Map';
 import './BingMap.css'
 
-const BingMap = ({ apiKey }) => {
+const BingMap = ({ apiKey, data }) => {
   const [loading,setLoading] = useState(true);
   useLayoutEffect(() => {
     // Load Bing Maps API
@@ -59,7 +59,13 @@ const BingMap = ({ apiKey }) => {
         // Add more data objects as needed
       ];
       var div_id="bingMap" 
-      GetClusterMap(apiKey,testDataIndia,div_id);
+      try{
+        GetClusterMap(apiKey,data,div_id);
+      }
+      catch(err)
+      {
+        console.log("Map Error:",err)
+      }
       setLoading(false);
     };
 
@@ -68,7 +74,7 @@ const BingMap = ({ apiKey }) => {
       document.head.removeChild(script);
       delete window.loadBingMap;
     };
-  }, [apiKey]);
+  }, [apiKey,data]);
 
   return<>
     {!loading?(<div id="bingMap" style={{ height: '87vh',zIndex:'1',overflow:'hidden' }}></div>):(

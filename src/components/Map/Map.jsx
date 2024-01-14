@@ -1,10 +1,11 @@
 "use client"
+
 const addedMarkers = [];
 export function GetClusterMap(mapToken, data, div_id) {
     // Get user's current location (assuming the browser supports geolocation)
     navigator.geolocation.getCurrentPosition(function (position) {
         const userLocation = new Microsoft.Maps.Location(position.coords.latitude, position.coords.longitude);
-
+        console.log("After navigator:",data);
         // Load the required Bing Maps modules
         Microsoft.Maps.loadModule('Microsoft.Maps.Clustering', function () {
             Microsoft.Maps.loadModule('Microsoft.Maps.Directions', function () {
@@ -15,15 +16,21 @@ export function GetClusterMap(mapToken, data, div_id) {
                     zoom: 10,
                     mapTypeId: Microsoft.Maps.MapTypeId.canvasLight,
                 });
-
+                const userPin= new Microsoft.Maps.Pushpin(userLocation,{
+                    color: 'blue'
+                })
+                map.entities.push(userPin)
+                
                 // Check if there is data to display
                 if (!data?.length) return;
-
+                
                 const directionsManager = new Microsoft.Maps.Directions.DirectionsManager(map);
                 const pins = data.map(function (locationData) {
-                    const coordinates = new Microsoft.Maps.Location(locationData.latitude, locationData.longitude);
+                    console.log("Inside data map:",locationData);
 
-                    const pinColor = locationData.pinColor || 'blue';
+                    const coordinates = new Microsoft.Maps.Location(parseFloat(locationData.lattitude), parseFloat(locationData.longitude));
+                    console.log("Coordinates:",coordinates);
+                    const pinColor = locationData.pinColor || 'red';
 
                     const pin = new Microsoft.Maps.Pushpin(coordinates, {
                         color: pinColor,
@@ -33,6 +40,7 @@ export function GetClusterMap(mapToken, data, div_id) {
                         materialType: locationData.materialType,
                         quantity: locationData.quantity,
                         address: locationData.address,
+                        phone:locationData.optional_phone
                     };
 
                     Microsoft.Maps.Events.addHandler(pin, 'click', function (e) {

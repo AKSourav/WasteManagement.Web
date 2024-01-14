@@ -26,6 +26,7 @@ export const createOrder = createAsyncThunk(
       let toastId;
       try {
         if (toast) {
+          console.log("Toast Triggered!")
           toastId = toast.loading("Creating Order");
         }
         const { data } = await apiClient.post('/api/waste_collection_point/', formValue);
@@ -98,7 +99,8 @@ const addressSlice= createSlice({
             })
             .addCase(cancelOrder.fulfilled,(state,action)=>{
               state.orders=state.orders.map((item)=>{
-                if(item.collection_point_id!=action.payload.collection_point_id) return action.payload;
+                if(item.collection_point_id==action.payload.collection_point_id) return action.payload;
+                else return item;
             });
             })            
     }
