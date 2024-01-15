@@ -28,7 +28,7 @@ function RenderPrompt({ item,index, prompt, action, handleClosePrompt }) {
 }
 
 
-const GridView = ({ data, onSelect, onEdit, onDelete, className, renderButton,renderExtraButtons }) => {
+const GridView = ({ data, onSelect, onEdit, onDelete, className, renderButton,renderExtraButtons,selected }) => {
 
   const [promptIndex,setPromptIndex] = useState();
 
@@ -42,12 +42,12 @@ const GridView = ({ data, onSelect, onEdit, onDelete, className, renderButton,re
   return (
     <div className={"flex flex-col items-center justify-start w-full "+className}>
       {data?.map((item, index) => (
-        <div key={index} className="p-7 border border-gray-300 bg-slate-200 transition-all hover:bg-slate-300 dark:bg-slate-900 dark:hover:bg-slate-950 rounded m-2 mt-0 w-full">
+        <div key={index} className={`p-7 border border-gray-300 bg-slate-200 transition-all hover:bg-slate-300 dark:bg-slate-900 dark:hover:bg-slate-950 rounded m-2 mt-0 w-full ${selected===index?"dark:bg-black dark:hover:bg-black dark:shadow-inner dark:shadow-slate-200 bg-green-500":""}`}>
           <div onClick={() => onSelect?onSelect({ item, index }):null} className="cursor-pointer flex flex-wrap  justify-between w-full">
             {Object.keys(item).map((key, idx) => (
-              <div key={idx} className="ml-3 mr-3">
-                <h3 className="text-lg font-semibold">{_.startCase(key)}</h3>
-                <p className="text-gray-700 dark:text-slate-100 max-w-xs overflow-x-hidden">{String(item[key]).length>15?String(item[key]).slice(0,15)+"...":item[key]}</p>
+              <div key={idx} className="m-1 ml-3 mr-3">
+                <h3 className="text-gray-700 dark:text-slate-100 text-lg font-bold">{_.startCase(key).toUpperCase()}</h3>
+                <p className="text-sm text-gray-700 dark:text-slate-100 max-w-xs overflow-x-hidden">{String(item[key]).length>15?String(item[key]).slice(0,15)+"...":item[key] || "NA"}</p>
               </div>
             ))}
             {renderButton && <>

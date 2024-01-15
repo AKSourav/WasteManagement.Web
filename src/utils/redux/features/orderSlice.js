@@ -59,17 +59,18 @@ export const cancelOrder = createAsyncThunk(
   );
 
 
-const addressSlice= createSlice({
+const orderSlice= createSlice({
     name: "orders",
     initialState:{
         orders:[],
+        selectedOrder:null,
         loading:false,
         error: null
     },
     reducers: {
-        // setCurrentAddress:(state,action)=>{
-        //     state.current=action.payload;
-        // }
+        setSelectedOrder:(state,action)=>{
+            state.selectedOrder=action.payload;
+        }
     },
     extraReducers: (builder)=>{
         builder
@@ -106,6 +107,6 @@ const addressSlice= createSlice({
     }
 })
 
-export const {setCurrentAddress} = addressSlice.actions;
+export const {setSelectedOrder} = orderSlice.actions;
 
-export default addressSlice.reducer;
+export default orderSlice.reducer;

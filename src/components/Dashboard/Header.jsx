@@ -17,6 +17,7 @@ const Header = () => {
       <Link href="/dashboard" className="text-2xl font-bold">Dashboard</Link>
       <nav className="flex justify-center items-center space-x-4">
         <Link href="/" className="hover:text-gray-300 transition duration-300">Home</Link>
+        <h1>{user?.user_type}</h1>
         <ProfileAvatar user={user} className="text-slate-950 dark:text-slate-200" onLogout={()=>dispatch(setLogout({router}))}/>
       </nav>
     </header>
