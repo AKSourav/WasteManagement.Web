@@ -1,13 +1,13 @@
+import Spinner from '@/utils/Spinner/Spinner';
 import React, { useEffect, useRef, useState } from 'react';
 
 const DirectionMap = ({className,srcCoordinates,destCoordinates,InfoDescription,srcPinColor,destPinColor}) => {
  const mapRef = useRef(null);
  const destRef = useRef(null);
  const srcRef = useRef(null);
- const [srcLocation,setSrcLocation] = useState();
- const [destLocation,setDestLocation] = useState();
  const [directionsManager,setDirectionsManager] = useState();
  const [map,setMap] = useState();
+ const [loading,setLoading] = useState(false);
 
  useEffect(() => {
    if (typeof window.Microsoft !== 'undefined' && window.Microsoft.Maps && window.Microsoft.Maps.Directions) {
@@ -32,7 +32,7 @@ const DirectionMap = ({className,srcCoordinates,destCoordinates,InfoDescription,
    };
  }, []);
 
- const loadPins= async ()=>{
+ const loadDirection= async ()=>{
     if (destRef.current) {
         map.entities.remove(destRef.current);
       }
@@ -41,7 +41,6 @@ const DirectionMap = ({className,srcCoordinates,destCoordinates,InfoDescription,
       }
     
     const srcLocationInstance= new window.Microsoft.Maps.Location(srcCoordinates.latitude, srcCoordinates.longitude);
-    setSrcLocation(srcLocationInstance);
     srcRef.current=new window.Microsoft.Maps.Pushpin(
         srcLocationInstance,
         { 
@@ -55,10 +54,10 @@ const DirectionMap = ({className,srcCoordinates,destCoordinates,InfoDescription,
         // zoom: 15
     });
 
+    let destLocationInstance
     if(destCoordinates)
     {
-        const destLocationInstance=new window.Microsoft.Maps.Location(destCoordinates.latitude, destCoordinates.longitude)
-        setDestLocation(destLocationInstance);
+        destLocationInstance=new window.Microsoft.Maps.Location(destCoordinates.latitude, destCoordinates.longitude)
         destRef.current=new window.Microsoft.Maps.Pushpin(
             destLocationInstance,
             { 
@@ -90,96 +89,34 @@ const DirectionMap = ({className,srcCoordinates,destCoordinates,InfoDescription,
             map.entities.push(infobox);
         });
     }
+    if(destLocationInstance)
+    {
+        setLoading(true);
+        directionsManager.setRequestOptions({ routeMode: Microsoft.Maps.Directions.RouteMode.driving });
+          var waypoint1 = new Microsoft.Maps.Directions.Waypoint({ location: srcLocationInstance });
+          var waypoint2 = new Microsoft.Maps.Directions.Waypoint({ location: destLocationInstance });
+          directionsManager.addWaypoint(waypoint1);
+          directionsManager.addWaypoint(waypoint2);
+          directionsManager.setRenderOptions({
+            itineraryContainer: '#directionsContainer', // Container to render the itinerary
+            waypointPushpinOptions: {
+                visible: false,
+            },
+            });
+            Microsoft.Maps.Events.addHandler(directionsManager, 'directionsUpdated', function () {
+                console.log('Directions updated event fired!!!');
+                setLoading(false);
+            });
+          await directionsManager.calculateDirections();
+    }
 
 
  }
- const loadDirection = async () => {
-    console.log("loadDirection", directionsManager, srcLocation, destLocation);
-  
-    if (typeof Microsoft === 'undefined' || !Microsoft.Maps || !Microsoft.Maps.Directions) {
-      console.error("Bing Maps Directions module not loaded.");
-      return;
-    }
-  
-    if (!directionsManager) {
-      console.error("DirectionsManager not initialized.");
-      return;
-    }
-  
-    if (!srcLocation || !destLocation) {
-      console.error("Source or destination locations are not defined.");
-      return;
-    }
-  
-    try {
-      // Set Route Mode to driving
-      directionsManager.setRequestOptions({ routeMode: Microsoft.Maps.Directions.RouteMode.driving });
-      var waypoint1 = new Microsoft.Maps.Directions.Waypoint({ location: srcLocation });
-      var waypoint2 = new Microsoft.Maps.Directions.Waypoint({ location: destLocation });
-      directionsManager.addWaypoint(waypoint1);
-      directionsManager.addWaypoint(waypoint2);
-      directionsManager.setRenderOptions({
-        itineraryContainer: '#directionsContainer', // Container to render the itinerary
-        waypointPushpinOptions: {
-            visible: false,
-        },
-        });
-      // Set the element in which the itinerary will be rendered
-      // directionsManager.setRenderOptions({ itineraryContainer: document.getElementById('printoutPanel') });
-      await directionsManager.calculateDirections();
-      console.log(InfoDescription);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  
-
-  function calculateAndDisplayDirections(origin, destination, directionsManager) {
-
-    console.log("calculateAndDisplayDirections",origin,destination,directionsManager)
-    // Set the origin and destination
-    const waypoint1 = new window.Microsoft.Maps.Directions.Waypoint({ location: origin });
-    const waypoint2 = new window.Microsoft.Maps.Directions.Waypoint({ location: destination });
-
-    directionsManager.addWaypoint(waypoint1);
-    directionsManager.addWaypoint(waypoint2);
-
-    // Set the rendering options
-    directionsManager.setRenderOptions({
-        itineraryContainer: '#directionsContainer', // Container to render the itinerary
-        waypointPushpinOptions: {
-            visible: false,
-        },
-    });
-
-    // Set the request options
-    const requestOptions = {
-        routeMode: Microsoft.Maps.Directions.RouteMode.driving,
-    };
-
-    // Make the route request
-    directionsManager.calculateDirections(requestOptions, function (response) {
-        if (response && response.statusCode === window.Microsoft.Maps.Directions.RouteResponseCode.success) {
-            // Display the directions on the map
-            directionsManager.setDirections(response);
-        } else {
-            console.error('Error calculating directions:', response);
-        }
-    });
-}
-
  
  useEffect(()=>{
     if(map && srcCoordinates)
     {
-        loadPins();
-    }
-    console.log("useEffect", directionsManager, srcLocation, destLocation);
-    if(map && srcCoordinates && destCoordinates &&  directionsManager)
-    {
-        console.log("Hello!")
         loadDirection();
-        // calculateAndDisplayDirections(srcLocation,destCoordinates,directionsManager)
     }
 
     return ()=>{
@@ -187,15 +124,18 @@ const DirectionMap = ({className,srcCoordinates,destCoordinates,InfoDescription,
         {
             directionsManager.clearAll();
             directionsManager.clearDisplay();
-            setSrcLocation();
-            setDestLocation();
         }
     }
 
  },[map,directionsManager,srcCoordinates,destCoordinates,InfoDescription])
 
  return (
-   <div ref={mapRef} className={`h-full ${className}`}></div>
+    <>
+        {loading && <div style={{zIndex:99999}} className='inset-0 fixed h-screen w-full bg-transparent'>
+                <Spinner/>
+            </div>}
+        <div ref={mapRef} className={`h-full ${className}`}></div>
+    </>
  );
 };
 

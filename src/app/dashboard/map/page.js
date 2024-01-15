@@ -62,17 +62,18 @@ const page = () => {
               <div id="sideDrawer" className="col-span-1 h-screen dark:bg-slate-800 bg-slate-300 overflow-y-scroll">
                 <GridView
                   data={orders?.map((order)=>{
-                    const {collection_point_id,customer_ref,waste_collector_ref,lattitude,longitude,updated,created,...rest}= order
+                    const {collection_point_id,date,slot,updated_by,customer_ref,waste_collector_ref,lattitude,longitude,updated,created,optional_phone,...rest}= order
                     const timestamp = new Date(created);
                     rest.created = timestamp.toLocaleDateString();
                     rest.id = collection_point_id;
+                    rest.phone=optional_phone;
                     return rest;
                   })}
                   onSelect={handleOrderSelect}
                   selected={selectedIndex}
                 />
               </div>
-              <div className="col-span-3 h-full">
+              <div className="col-span-3 h-full dark:bg-slate-700">
                 <DirectionMap InfoDescription={InfoDescription} dest={selectedOrder} srcCoordinates={userCoordinates} destCoordinates={selectedOrder?{latitude:selectedOrder?.lattitude,longitude:selectedOrder?.longitude}:null} className={"h-screen w-full"}/>
               </div>
             </div>
