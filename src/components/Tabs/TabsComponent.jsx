@@ -3,7 +3,7 @@ import React, { useState } from "react";
 const Tab = ({ children, isSelected, onClick }) => (
  <button
    className={`py-2 px-4 text-sm font-medium text-center rounded-t-lg border-b-2 ${
-     isSelected ? 'border-indigo-500 text-indigo-600' : 'border-transparent hover:border-gray-200 hover:text-gray-600'
+     isSelected ? 'font-extrabold border-indigo-500 text-indigo-800 dark:text-slate-100' : 'border-transparent hover:border-gray-200 hover:text-gray-600'
    }`}
    onClick={onClick}
  >
