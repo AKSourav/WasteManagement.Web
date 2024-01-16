@@ -37,21 +37,24 @@ export function GetClusterMap(mapToken, data, div_id) {
                     });
 
                     pin.metadata = {
-                        materialType: locationData.materialType,
-                        quantity: locationData.quantity,
+                        Name: locationData?.customer_ref?.first_name,
                         address: locationData.address,
+                        locality: locationData.locality,
+                        city: locationData.city,
+                        pin: locationData.pincode,
                         phone:locationData.optional_phone
                     };
 
                     Microsoft.Maps.Events.addHandler(pin, 'click', function (e) {
                         const materialInfo = `
                             Name: ${e.target.metadata.name}<br>
-                            Material Type: ${e.target.metadata.materialType}<br>
-                            Quantity: ${e.target.metadata.quantity}<br>
                             Address: ${e.target.metadata.address}<br>
+                            Locality: ${e.target.metadata.locality}<br>
+                            City: ${e.target.metadata.city}<br>
+                            Pin: ${e.target.metadata.pin}<br>
                             Phone:<a href="tel:${e.target.metadata.phone}" class="Blondie">${e.target.metadata.phone}</a>`;
                         const infobox = new Microsoft.Maps.Infobox(e.target.getLocation(), {
-                            title: 'Material Information',
+                            title: 'Collection Point Information',
                             description: materialInfo,
                             actions: [
                                 {
@@ -100,7 +103,7 @@ export function GetClusterMap(mapToken, data, div_id) {
                         var description = pushPins
                             .slice(0, 3)
                             .map((pin) => {
-                                return pin.metadata.materialType;
+                                return pin.metadata.phone;
                             })
                             .join('<br>');
 
