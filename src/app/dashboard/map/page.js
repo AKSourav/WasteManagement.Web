@@ -7,6 +7,7 @@ import Tabs from '@/components/Tabs/TabsComponent';
 import MapLoader, { DirectionMap } from '@/components/Maps';
 import GridView from '@/components/GridView/Gridview';
 import toast,{Toaster} from 'react-hot-toast'
+import withAuth from '@/utils/withAuth';
 
 const page = () => {
   const [selectedIndex,setSelectedIndex] = useState();
@@ -84,4 +85,4 @@ const page = () => {
   )
 }
 
-export default page;
+export default withAuth(page);

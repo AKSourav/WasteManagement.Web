@@ -19,7 +19,7 @@ export function GetClusterMap(mapToken, data, div_id) {
                 const userPin= new Microsoft.Maps.Pushpin(userLocation,{
                     color: 'blue'
                 })
-                map.entities.push(userPin)
+                // map.entities.push(userPin)
                 
                 // Check if there is data to display
                 if (!data?.length) return;

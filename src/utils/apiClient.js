@@ -9,11 +9,12 @@ let isRefreshing = false;
 let failedQueue = [];
 
 const processQueue = (error, token = null) => {
-  failedQueue.forEach((prom) => {
+  failedQueue.forEach(async (prom) => {
     if (error) {
       prom.reject(error);
     } else {
-      prom.resolve(token);
+      await apiClient.request(prom.originalRequest)
+      prom.resolve();
     }
   });
 
@@ -59,7 +60,7 @@ apiClient.interceptors.response.use(
             cookies.set('refresh', data.refresh, { path: '/', maxAge: 90 * 24 * 60 * 60 });
 
             // Set access cookie with a 5-minute expiration
-            cookies.set('access', data.access, { path: '/', maxAge: 5 * 60 });
+            cookies.set('access', data.access, { path: '/', maxAge: 60 * 60 });
 
             // Retry the original request
             isRefreshing = false;
@@ -68,9 +69,7 @@ apiClient.interceptors.response.use(
           }
           else
           {
-            cookies.remove('access', { path: '/' });
-            cookies.remove('refresh', { path: '/' });
-            window.location.reload();
+            throw new Error('refresh Token is not present!')
           }
         } catch (err) {
           // Handle refresh token request error
@@ -88,7 +87,7 @@ apiClient.interceptors.response.use(
       } else {
         // Queue the failed request for later retry
         const retryPromise = new Promise((resolve, reject) => {
-          failedQueue.push({ resolve, reject });
+          failedQueue.push({ resolve, reject , originalRequest });
         });
         return retryPromise;
       }

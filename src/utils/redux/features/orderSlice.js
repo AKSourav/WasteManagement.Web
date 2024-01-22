@@ -4,13 +4,17 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const getOrders = createAsyncThunk(
     "orders/all",
-    async ({toast }, { rejectWithValue }) => {
+    async ({toast ,filter }, { rejectWithValue }) => {
       let toastId;
       try {
         if (toast) {
           toastId = toast.loading("Fetching Orders");
         }
-        const { data } = await apiClient.get('/api/waste_collection_point/');
+        const { data } = await apiClient.get('/api/waste_collection_point/',{
+          params:{
+            filter:JSON.stringify(filter || {})
+          }
+        });
         if (toast) toast.success("Success", { id: toastId });
         return data;
       } catch (err) {
@@ -50,6 +54,25 @@ export const cancelOrder = createAsyncThunk(
         }
         const { data } = await apiClient.delete(`/api/waste_collection_point/${id}/`);
         if (toast) toast.success("Order Canceled", { id: toastId });
+        return data;
+      } catch (err) {
+        if (toast) toast.error("Error occurred!", { id: toastId });
+        return rejectWithValue(err.response.data);
+      }
+    }
+  );
+
+export const acceptOrder = createAsyncThunk(
+    "orders/accept",
+    async ({id, toast, formValue }, { rejectWithValue }) => {
+      let toastId;
+      try {
+        if (toast) {
+          toastId = toast.loading("Accepting Order");
+          // alert(toastId)
+        }
+        const { data } = await apiClient.put(`/api/waste_collection_point/${id}/`,formValue);
+        if (toast) toast.success("Order Accepted", { id: toastId });
         return data;
       } catch (err) {
         if (toast) toast.error("Error occurred!", { id: toastId });
@@ -99,6 +122,12 @@ const orderSlice= createSlice({
                 state.error=action.payload?.message
             })
             .addCase(cancelOrder.fulfilled,(state,action)=>{
+              state.orders=state.orders.map((item)=>{
+                if(item.collection_point_id==action.payload.collection_point_id) return action.payload;
+                else return item;
+            });
+            })            
+            .addCase(acceptOrder.fulfilled,(state,action)=>{
               state.orders=state.orders.map((item)=>{
                 if(item.collection_point_id==action.payload.collection_point_id) return action.payload;
                 else return item;

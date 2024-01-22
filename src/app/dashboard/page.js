@@ -1,5 +1,6 @@
 "use client"
 import MainContent from '@/components/Dashboard/MainContent';
+import withAuth from '@/utils/withAuth';
 import React from 'react';
 
 const page = () => {
@@ -10,4 +11,4 @@ const page = () => {
   )
 }
 
-export default page
+export default withAuth(page)

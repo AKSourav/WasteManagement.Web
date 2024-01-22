@@ -31,7 +31,9 @@ const MapLoader = ({ children, Spinner }) => {
 
     // Initialize the map in the loadBingMap callback
     window.loadBingMap = () => {
+      Microsoft.Maps.loadModule('Microsoft.Maps.Directions', function () {
       setLoading(false);
+      })
     };
 
     return () => {

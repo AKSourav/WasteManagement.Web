@@ -23,7 +23,7 @@ export const login = createAsyncThunk(
       cookies.set('refresh', data.refresh, { path: '/', maxAge: 90 * 24 * 60 * 60 });
 
       // Set access cookie with a 5-minute expiration
-      cookies.set('access', data.access, { path: '/', maxAge: 5 * 60 });
+      cookies.set('access', data.access, { path: '/', maxAge: 60 * 60 });
 
       return data.user;
     } catch (err) {

@@ -1,0 +1,8 @@
+#bingMap .MicrosoftMap .Infobox .infobox-actions{
+    display: flex;
+    overflow: visible;
+    height: 30px;
+}
+#bingMap .MicrosoftMap .Infobox .infobox-actions-list>ul{
+    width: max-content;
+}

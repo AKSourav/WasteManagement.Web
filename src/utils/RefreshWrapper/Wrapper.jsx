@@ -35,7 +35,7 @@ const Wrapper = ({children}) => {
     <>
         {children}
         <div style={{zIndex:999999999}}>
-            <Toaster/>
+            <Toaster position="bottom-center"/>
         </div>
     </>
   )

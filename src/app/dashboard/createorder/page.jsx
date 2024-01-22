@@ -1,4 +1,5 @@
 import CreateOrder from '@/components/CreateOrder/CreateOrder'
+import withAuth from '@/utils/withAuth'
 import React from 'react'
 
 const page = () => {
@@ -9,4 +10,4 @@ const page = () => {
   )
 }
 
-export default page
+export default withAuth(page)

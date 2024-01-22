@@ -1,12 +1,13 @@
 import Spinner from '@/utils/Spinner/Spinner';
 import React, { useEffect, useRef, useState } from 'react';
+import './DirectionMap.css'
 
-const DirectionMap = ({className,srcCoordinates,destCoordinates,InfoDescription,srcPinColor,destPinColor}) => {
+const DirectionMap = ({className,actions,srcCoordinates,destCoordinates,InfoDescription,srcPinColor,destPinColor}) => {
  const mapRef = useRef(null);
  const destRef = useRef(null);
  const srcRef = useRef(null);
- const [directionsManager,setDirectionsManager] = useState();
- const [map,setMap] = useState();
+ const directionsManagerRef = useRef(null);
+ const mapManagerRef = useRef(null);
  const [loading,setLoading] = useState(false);
 
  useEffect(() => {
@@ -17,42 +18,46 @@ const DirectionMap = ({className,srcCoordinates,destCoordinates,InfoDescription,
      const directionsManagerInstance = new window.Microsoft.Maps.Directions.DirectionsManager(mapInstance);
      console.log("Map Instance:", mapInstance);
      console.log("Map directions ManagerInstance:", directionsManagerInstance);
-     setMap(mapInstance);
-     setDirectionsManager(directionsManagerInstance);
+     mapManagerRef.current=mapInstance;
+     directionsManagerRef.current=directionsManagerInstance;
    }
 
    return () => {
-     if (map) {
-        map.dispose();
+     if (mapManagerRef.current) {
+        mapManagerRef.current.dispose();
      }
-     if(directionsManager){
-        directionsManager.clearAll();
-        directionsManager.clearDisplay();
+     if(directionsManagerRef.current){
+        directionsManagerRef.current.clearAll();
+        directionsManagerRef.current.clearDisplay();
      }
    };
  }, []);
 
  const loadDirection= async ()=>{
     if (destRef.current) {
-        map.entities.remove(destRef.current);
+        mapManagerRef.current.entities.remove(destRef.current);
       }
     if (srcRef.current) {
-        map.entities.remove(srcRef.current);
+        mapManagerRef.current.entities.remove(srcRef.current);
       }
     
-    const srcLocationInstance= new window.Microsoft.Maps.Location(srcCoordinates.latitude, srcCoordinates.longitude);
-    srcRef.current=new window.Microsoft.Maps.Pushpin(
-        srcLocationInstance,
-        { 
-            draggable: false,
-            color: srcPinColor || 'blue'
-        }
-    );
-    map.entities.push(srcRef.current);
-    map.setView({
-        center: new window.Microsoft.Maps.Location(srcCoordinates.latitude, srcCoordinates.longitude),
-        // zoom: 15
-    });
+    let srcLocationInstance;
+    if(srcCoordinates)
+    {
+        srcLocationInstance= new window.Microsoft.Maps.Location(srcCoordinates.latitude, srcCoordinates.longitude);
+        srcRef.current=new window.Microsoft.Maps.Pushpin(
+            srcLocationInstance,
+            { 
+                draggable: false,
+                color: srcPinColor || 'blue'
+            }
+        );
+        mapManagerRef.current.entities.push(srcRef.current);
+        mapManagerRef.current.setView({
+            center: new window.Microsoft.Maps.Location(srcCoordinates.latitude, srcCoordinates.longitude),
+            // zoom: 15
+        });
+    }
 
     let destLocationInstance
     if(destCoordinates)
@@ -65,8 +70,8 @@ const DirectionMap = ({className,srcCoordinates,destCoordinates,InfoDescription,
                 color: destPinColor || 'red'
             }
         );
-        map.entities.push(destRef.current);
-        map.setView({
+        mapManagerRef.current.entities.push(destRef.current);
+        mapManagerRef.current.setView({
             center: new window.Microsoft.Maps.Location(destCoordinates.latitude, destCoordinates.longitude),
             // zoom: 15
         });
@@ -74,6 +79,7 @@ const DirectionMap = ({className,srcCoordinates,destCoordinates,InfoDescription,
             const infobox = new window.Microsoft.Maps.Infobox(e.target.getLocation(), {
                 title: 'Collection Point Information',
                 description: InfoDescription || "Hello",
+                actions: actions
             });
     
             infobox.setOptions({
@@ -86,55 +92,55 @@ const DirectionMap = ({className,srcCoordinates,destCoordinates,InfoDescription,
                 // Add other styling options as needed
             });
     
-            map.entities.push(infobox);
+            mapManagerRef.current.entities.push(infobox);
         });
     }
-    if(destLocationInstance)
+    if(destLocationInstance && srcLocationInstance)
     {
         setLoading(true);
-        directionsManager.setRequestOptions({ routeMode: Microsoft.Maps.Directions.RouteMode.driving });
+        directionsManagerRef.current.setRequestOptions({ routeMode: Microsoft.Maps.Directions.RouteMode.driving });
           var waypoint1 = new Microsoft.Maps.Directions.Waypoint({ location: srcLocationInstance });
           var waypoint2 = new Microsoft.Maps.Directions.Waypoint({ location: destLocationInstance });
-          directionsManager.addWaypoint(waypoint1);
-          directionsManager.addWaypoint(waypoint2);
-          directionsManager.setRenderOptions({
+          directionsManagerRef.current.addWaypoint(waypoint1);
+          directionsManagerRef.current.addWaypoint(waypoint2);
+          directionsManagerRef.current.setRenderOptions({
             itineraryContainer: '#directionsContainer', // Container to render the itinerary
             waypointPushpinOptions: {
                 visible: false,
             },
             });
-            Microsoft.Maps.Events.addHandler(directionsManager, 'directionsUpdated', function () {
+            Microsoft.Maps.Events.addHandler(directionsManagerRef.current, 'directionsUpdated', function () {
                 console.log('Directions updated event fired!!!');
                 setLoading(false);
             });
-          await directionsManager.calculateDirections();
+          await directionsManagerRef.current.calculateDirections();
     }
 
 
  }
  
  useEffect(()=>{
-    if(map && srcCoordinates)
+    if(mapManagerRef.current)
     {
         loadDirection();
     }
 
     return ()=>{
-        if(directionsManager)
+        if(directionsManagerRef.current)
         {
-            directionsManager.clearAll();
-            directionsManager.clearDisplay();
+            directionsManagerRef.current.clearAll();
+            directionsManagerRef.current.clearDisplay();
         }
     }
 
- },[map,directionsManager,srcCoordinates,destCoordinates,InfoDescription])
+ },[mapManagerRef.current,directionsManagerRef.current,srcCoordinates,destCoordinates,InfoDescription])
 
  return (
     <>
         {loading && <div style={{zIndex:99999}} className='inset-0 fixed h-screen w-full bg-transparent'>
                 <Spinner/>
             </div>}
-        <div ref={mapRef} className={`h-full ${className}`}></div>
+        <div id="bingMap" ref={mapRef} className={`h-full ${className}`}></div>
     </>
  );
 };

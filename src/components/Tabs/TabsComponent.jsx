@@ -17,28 +17,28 @@ const Tabs = ({ children }) => {
     }
     else if(!Array.isArray(children))
     {
-        return children;
+        children=[children];
     }
  const [activeTab, setActiveTab] = useState(children[0]?.props?.label);
     // console.log("Children:",typeof(children))
 
  return (
-   <div className="w-screen">
+   <div className="w-full">
      <div className="flex divide-x divide-gray-200 shadow-slate-300 shadow-lg">
        {children.map((child) => (
          <Tab
-           key={child.props.label}
-           isSelected={activeTab === child.props.label}
-           onClick={() => setActiveTab(child.props.label)}
+           key={child?.props?.label}
+           isSelected={activeTab === child?.props?.label}
+           onClick={() => setActiveTab(child?.props?.label)}
          >
-           {child.props.label}
+           {child?.props?.label.toUpperCase()}
          </Tab>
        ))}
      </div>
-     <div className="border-b border-gray-200 h-full">
+     <div  style={{width:"full",padding:"1px",margin:"0px"}} className="border-b border-gray-200 h-full">
        {children.map((child) => {
-         if (child.props.label !== activeTab) return undefined;
-         return child.props.children;
+         if (child?.props?.label !== activeTab) return undefined;
+         return child?.props?.children;
        })}
      </div>
    </div>
