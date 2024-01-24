@@ -29,7 +29,7 @@ const DetailsLoader = ({id}) => {
   return (<div className='h-full w-full'>
     {
         loading?<div className=" inset-0 fixed w-full h-full"><Spinner/></div>:(
-            error?<h1>Error</h1>:(<OrderDetail data={order}/>)
+            error?<h1>Error</h1>:(<OrderDetail setData={setOrder} data={order}/>)
         )
     }
   </div>)
