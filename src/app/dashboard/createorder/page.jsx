@@ -1,13 +1,14 @@
+"use client"
 import CreateOrder from '@/components/CreateOrder/CreateOrder'
 import withAuth from '@/utils/withAuth'
 import React from 'react'
 
-const page = () => {
+const Page = () => {
   return (
     <div className='pt-20 h-screen'>
-      <CreateOrder/>
+      <CreateOrder />
     </div>
   )
 }
 
-export default withAuth(page)
+export default withAuth(Page)

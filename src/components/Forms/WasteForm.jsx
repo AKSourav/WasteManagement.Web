@@ -1,55 +1,46 @@
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import apiClient from '@/utils/apiClient';
+import Spinner from '@/utils/Spinner/Spinner';
 
 const WasteForm = ({ id }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [error, setError] = useState([]);
+  const [isLoading, setLoading] = useState(false);
   const [formData, setFormData] = useState([
     { waste_type: '', price: '', weight: '', total_cost: '', image: null },
   ]);
 
   const [otp, setOtp] = useState('');
-  const [expectedOtp,setExpectedOtp] = useState('');
-  const [timer,setTimer] = useState(0);
+  const [timer, setTimer] = useState(0);
 
-  const handleResendOtp= async()=>{
-    setExpectedOtp();
-    try{
-      const sendEmailData={items:[],collection_point_id:id}
-      formData.forEach((item,index)=>{
-        const {image,...rest}= item
+  const handleResendOtp = async () => {
+    setLoading(true);
+    try {
+      const sendEmailData = { items: [], collection_point_id: id }
+      formData.forEach((item, index) => {
+        const { image, ...rest } = item
         sendEmailData.items.push(rest);
       })
-      console.log("sendEmailData:",sendEmailData);
-      const {data} = await apiClient.post('/api/pin_verify/',sendEmailData);
-      setExpectedOtp(data.otp);
+      console.log("sendEmailData:", sendEmailData);
+      const { data } = await apiClient.post(`/api/pin_verify/${id}/`, sendEmailData);
       setTimer(30);
-      // const intervalId=setInterval(()=>{
-      //   console.log("HELLOS")
-      //   console.log(timer,typeof(timer))
-      //   if(timer<=0)
-      //   {
-      //     setTimer(0);
-      //     return clearInterval(intervalId);
-      //   }
-      //   setTimer((prev)=>prev-1);
-      // },1000);
-    }catch(error){
+    } catch (error) {
       console.log(error);
       toast.error("FAiled");
     }
+    setLoading(false);
   }
 
   useEffect(() => {
     let intervalId;
-  
+
     if (timer > 0) {
       intervalId = setInterval(() => {
         setTimer((prev) => prev - 1);
       }, 1000);
     }
-  
+
     // Clear interval on component unmount
     return () => {
       if (intervalId) {
@@ -132,26 +123,24 @@ const WasteForm = ({ id }) => {
         return;
       }
     }
-
-    try{
-      const sendEmailData={items:[],collection_point_id:id}
-      formData.forEach((item,index)=>{
-        const {image,...rest}= item
+    setLoading(true);
+    try {
+      const sendEmailData = { items: [], collection_point_id: id }
+      formData.forEach((item, index) => {
+        const { image, ...rest } = item
         sendEmailData.items.push(rest);
       })
-      console.log("sendEmailData:",sendEmailData);
-      const {data} = await apiClient.post('/api/pin_verify/',sendEmailData);
-      setExpectedOtp(data.otp);
+      console.log("sendEmailData:", sendEmailData);
+      const { data } = await apiClient.post(`/api/pin_verify/${id}/`, sendEmailData);
       setCurrentStep((prevStep) => prevStep + 1);
-    }catch(error){
+    } catch (error) {
       console.log(error);
       toast.error("FAiled");
     }
-
+    setLoading(false);
   };
 
   const handlePreviousStep = () => {
-    setExpectedOtp();
     setCurrentStep((prevStep) => prevStep - 1);
   };
 
@@ -160,108 +149,111 @@ const WasteForm = ({ id }) => {
   };
 
   const handleOtpSubmit = async () => {
-    // Simulating OTP verification (replace this with your actual OTP verification logic)
-    // const expectedOtp = '123456'; // Replace with the actual OTP you expect
-    if (String(otp) === String(expectedOtp)) {
-      // Proceed with the submission
-      console.log("Hohgaya !")
-      setError([]);
-      try {
-        const postData = new FormData();
+    setLoading(true);
+    setError([]);
+    try {
+      const { } = await apiClient.get(`/api/pin_verify/${id}/`, {
+        params: {
+          otp: String(otp)
+        }
+      });
 
-        formData.forEach((dataObject, index) => {
-          postData.append(`image${index}`, dataObject.image);
-          postData.append(`price${index}`, dataObject.price);
-          postData.append(`total_cost${index}`, dataObject.total_cost);
-          postData.append(`waste_type${index}`, dataObject.waste_type);
-          postData.append(`weight${index}`, dataObject.weight);
-        });
+      const postData = new FormData();
 
-        const { data } = await apiClient.post(`/api/pinVerification/${id}/`, postData);
-        console.log("CloudData:", data);
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      toast.error('Invalid OTP. Please try again.');
+      formData.forEach((dataObject, index) => {
+        postData.append(`image${index}`, dataObject.image);
+        postData.append(`price${index}`, dataObject.price);
+        postData.append(`total_cost${index}`, dataObject.total_cost);
+        postData.append(`waste_type${index}`, dataObject.waste_type);
+        postData.append(`weight${index}`, dataObject.weight);
+      });
+
+      const { data } = await apiClient.post(`/api/records/${id}/`, postData);
+      console.log("CloudData:", data);
+    } catch (error) {
+      console.log(error);
     }
+    setLoading(false);
   };
 
   return (
-    <div className="container mx-auto mt-8 dark:bg-gray-800 p-4 mt-0 rounded-md">
+    <div className="container mx-auto mt-8 dark:bg-gray-800 p-4 rounded-md">
+      {isLoading && <div className='fixed inset-0 w-full h-full'>
+        <Spinner />
+      </div>}
       <div style={{ height: '60vh' }} className="overflow-y-scroll">
         {currentStep === 1 && (
           <>
             {formData.map((data, index) => (
-          <div key={index} className="mb-4 p-2 border border-gray-300 rounded flex flex-wrap">
-            <div className="m-1 w-full md:w-1/3">
-              <label className="block text-sm font-medium text-gray-600">Waste Type</label>
-              <select
-                className={`m-1 p-2 w-full border rounded-md dark:bg-gray-700 ${error.some((e)=>e.index===index && e.field==="waste_type") && (!data.waste_type || data.waste_type.length===0) && `border-2 border-red-500`}`}
-                value={data.waste_type}
-                onChange={(e) => {
-                  handleChange(index, 'waste_type', e.target.value);
-                  handleChange(index, 'weight', 0);
-                }}
-                required // Adding the required attribute
-              >
-                <option value="" disabled>Select Waste Type</option>
-                {wasteTypesData.map((type) => (
-                  <option key={type.id} value={type.name}>{type.name}</option>
-                ))}
-              </select>
-            </div>
-            <div className="m-1 w-full md:w-1/5">
-              <label className="block text-sm font-medium text-gray-600">Price (per gram)</label>
-              <input
-                type="text"
-                className={`outline-none m-1 p-2 w-full border rounded-md dark:bg-gray-700 ${error.some((e)=>e.index===index && e.field==="price") && (!data.price || data.price.length===0) && `border-2 border-red-500`}`}
-                value={data.price}
-                readOnly
-                required // Adding the required attribute
-              />
-            </div>
-            <div className="m-1 w-full md:w-1/5">
-              <label className="block text-sm font-medium text-gray-600">Weight (in grams)</label>
-              <input
-                type="text"
-                className={`m-1 p-2 w-full border rounded-md dark:bg-gray-700 ${error.some((e)=>e.index===index && e.field==="weight") && (!data.weight || data.weight.length===0) && `border-2 border-red-500`}`}
-                value={data.weight}
-                onChange={(e) => handleChange(index, 'weight', e.target.value)}
-                required // Adding the required attribute
-              />
-            </div>
-            <div className="m-1 w-full md:w-1/5">
-              <label className="block text-sm font-medium text-gray-600">Total Cost</label>
-              <input
-                type="text"
-                className={`m-1 p-2 w-full border rounded-md dark:bg-gray-700 ${error.some((e)=>e.index===index && e.field==="total_cost") && (!data.total_cost || data.total_cost.length===0) && `border-2 border-red-500`}`}
-                value={data.total_cost}
-                readOnly
-                required // Adding the required attribute
-              />
-            </div>
-            <div className="m-1 w-full md:w-1/5">
-              <label className="block text-sm font-medium text-gray-600">Image</label>
-              <input
-                type="file"
-                className={`m-1 p-2 w-full border rounded-md dark:bg-gray-700 ${ error.some((e)=>e.index===index && e.field==="image") && (!data.image || data.image.length===0) && `border-2 border-red-500`}`}
-                accept="image/*"
-                onChange={(e) => handleImageChange(index, e)}
-                required // Adding the required attribute
-              />
-            </div>
-            <div className="m-1 mt-4 w-full text-center">
-              <button
-                type="button"
-                className="px-4 py-2 bg-red-500 text-white rounded"
-                onClick={() => handleRemove(index)}
-              >
-                Remove
-              </button>
-            </div>
-          </div>
-        ))}
+              <div key={index} className="mb-4 p-2 border border-gray-300 rounded flex flex-wrap">
+                <div className="m-1 w-full md:w-1/3">
+                  <label className="block text-sm font-medium text-gray-600">Waste Type</label>
+                  <select
+                    className={`m-1 p-2 w-full border rounded-md dark:bg-gray-700 ${error.some((e) => e.index === index && e.field === "waste_type") && (!data.waste_type || data.waste_type.length === 0) && `border-2 border-red-500`}`}
+                    value={data.waste_type}
+                    onChange={(e) => {
+                      handleChange(index, 'waste_type', e.target.value);
+                      handleChange(index, 'weight', 0);
+                    }}
+                    required // Adding the required attribute
+                  >
+                    <option value="" disabled>Select Waste Type</option>
+                    {wasteTypesData.map((type) => (
+                      <option key={type.id} value={type.name}>{type.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="m-1 w-full md:w-1/5">
+                  <label className="block text-sm font-medium text-gray-600">Price (per gram)</label>
+                  <input
+                    type="text"
+                    className={`outline-none m-1 p-2 w-full border rounded-md dark:bg-gray-700 ${error.some((e) => e.index === index && e.field === "price") && (!data.price || data.price.length === 0) && `border-2 border-red-500`}`}
+                    value={data.price}
+                    readOnly
+                    required // Adding the required attribute
+                  />
+                </div>
+                <div className="m-1 w-full md:w-1/5">
+                  <label className="block text-sm font-medium text-gray-600">Weight (in grams)</label>
+                  <input
+                    type="text"
+                    className={`m-1 p-2 w-full border rounded-md dark:bg-gray-700 ${error.some((e) => e.index === index && e.field === "weight") && (!data.weight || data.weight.length === 0) && `border-2 border-red-500`}`}
+                    value={data.weight}
+                    onChange={(e) => handleChange(index, 'weight', e.target.value)}
+                    required // Adding the required attribute
+                  />
+                </div>
+                <div className="m-1 w-full md:w-1/5">
+                  <label className="block text-sm font-medium text-gray-600">Total Cost</label>
+                  <input
+                    type="text"
+                    className={`m-1 p-2 w-full border rounded-md dark:bg-gray-700 ${error.some((e) => e.index === index && e.field === "total_cost") && (!data.total_cost || data.total_cost.length === 0) && `border-2 border-red-500`}`}
+                    value={data.total_cost}
+                    readOnly
+                    required // Adding the required attribute
+                  />
+                </div>
+                <div className="m-1 w-full md:w-1/5">
+                  <label className="block text-sm font-medium text-gray-600">Image</label>
+                  <input
+                    type="file"
+                    className={`m-1 p-2 w-full border rounded-md dark:bg-gray-700 ${error.some((e) => e.index === index && e.field === "image") && (!data.image || data.image.length === 0) && `border-2 border-red-500`}`}
+                    accept="image/*"
+                    onChange={(e) => handleImageChange(index, e)}
+                    required // Adding the required attribute
+                  />
+                </div>
+                <div className="m-1 mt-4 w-full text-center">
+                  <button
+                    type="button"
+                    className="px-4 py-2 bg-red-500 text-white rounded"
+                    onClick={() => handleRemove(index)}
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+            ))}
             <div className="mt-4 w-full">
               <button
                 type="button"
@@ -291,11 +283,11 @@ const WasteForm = ({ id }) => {
             </button>
             <button
               type="button"
-              className={`px-4 py-2 mt-4 rounded ${timer>0 ? "bg-transparent text-black dark:text-white":"bg-blue-500 text-white "}`}
-              disabled={timer>0}
+              className={`px-4 py-2 mt-4 rounded ${timer > 0 ? "bg-transparent text-black dark:text-white" : "bg-blue-500 text-white "}`}
+              disabled={timer > 0}
               onClick={handleResendOtp}
             >
-              {timer>0?timer:"Resend OTP"}
+              {timer > 0 ? timer : "Resend OTP"}
             </button>
           </div>
         )}

@@ -3,15 +3,15 @@ import React from 'react'
 import withAuth from '@/utils/withAuth'
 import DetailsLoader from './DetailsLoader'
 
-const page = ({params}) => {
+const Page = ({ params }) => {
     return (
         <div
             className='h-screen w-full'
-            style={{paddingTop:"4.5rem"}}
+            style={{ paddingTop: "4.5rem" }}
         >
-            <DetailsLoader id={params.id}/>
+            <DetailsLoader id={params.id} />
         </div>
     )
 }
 
-export default withAuth(page)
+export default withAuth(Page)

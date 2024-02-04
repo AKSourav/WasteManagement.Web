@@ -3,12 +3,12 @@ import MainContent from '@/components/Dashboard/MainContent';
 import withAuth from '@/utils/withAuth';
 import React from 'react';
 
-const page = () => {
+const Page = () => {
   return (
     <div>
-      <MainContent/>
+      <MainContent />
     </div>
   )
 }
 
-export default withAuth(page)
+export default withAuth(Page)
