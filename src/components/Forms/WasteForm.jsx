@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import apiClient from '@/utils/apiClient';
 import Spinner from '@/utils/Spinner/Spinner';
+import { useRouter } from 'next/navigation';
 
 const WasteForm = ({ id }) => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -10,6 +11,7 @@ const WasteForm = ({ id }) => {
   const [formData, setFormData] = useState([
     { waste_type: '', price: '', weight: '', total_cost: '', image: null },
   ]);
+  const router = useRouter();
 
   const [otp, setOtp] = useState('');
   const [timer, setTimer] = useState(0);
@@ -170,6 +172,7 @@ const WasteForm = ({ id }) => {
 
       const { data } = await apiClient.post(`/api/records/${id}/`, postData);
       console.log("CloudData:", data);
+      // router.push('/dashoard/orders');
     } catch (error) {
       console.log(error);
     }
