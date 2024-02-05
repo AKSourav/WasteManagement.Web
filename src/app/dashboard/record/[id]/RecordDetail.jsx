@@ -27,17 +27,17 @@ const RecordDetail = ({ data, setData }) => {
         fetchWasteTypeDetails();
     }, [data])
 
-    // const InfoDescription = useMemo(() => {
-    //     return (`
-    //       <div style={{height:"100vh",width:"100vw",display:"flex",flexDirection:"column"}}>
-    //         <b>Address</b> : ${data?.address}<br/>
-    //         <b>Phone</b> : <a href="tel:${data?.optional_phone}" class="Blondie">${data?.optional_phone}</a><br/>
-    //         <b>Locality</b> : ${data?.locality}<br/>
-    //         <b>District</b> : ${data?.district}<br/>
-    //         <b>Country</b> : ${data?.country}<br/>
-    //       </div>
-    //     `)
-    // }, [data]);
+    const InfoDescription = useMemo(() => {
+        return (`
+          <div style={{height:"100vh",width:"100vw",display:"flex",flexDirection:"column"}}>
+            <b>Address</b> : ${data?.waste_collector_ref?.address}<br/>
+            <b>Phone</b> : <a href="tel:${data?.waste_collector_ref?.optional_phone}" class="Blondie">${data?.waste_collector_ref?.optional_phone}</a><br/>
+            <b>Locality</b> : ${data?.waste_collector_ref?.locality}<br/>
+            <b>District</b> : ${data?.waste_collector_ref?.district}<br/>
+            <b>Country</b> : ${data?.waste_collector_ref?.country}<br/>
+          </div>
+        `)
+    }, [data]);
 
     const handleGetDiection = async () => {
         navigator.geolocation.getCurrentPosition(function (position) {
@@ -47,39 +47,44 @@ const RecordDetail = ({ data, setData }) => {
     const handleCancelDiection = async () => {
         setSrcCoordinates();
     }
-    // const actions = [
-    //     {
-    //         label: 'Get Directions',
-    //         eventHandler: handleGetDiection
-    //     },
-    //     {
-    //         label: 'Cancel Directions',
-    //         eventHandler: handleCancelDiection
-    //     },
-    // ]
-    // const order = useMemo(() => {
-    //     const { collection_point_id, customer_ref, waste_collector_ref, lattitude, longitude, updated, created, ...rest } = data
-    //     const timestamp = new Date(created);
-    //     rest.created = timestamp.toLocaleDateString();
-    //     rest.id = collection_point_id;
-    //     return rest;
-    // }, [data]);
+    const actions = [
+        {
+            label: 'Get Directions',
+            eventHandler: handleGetDiection
+        },
+        {
+            label: 'Cancel Directions',
+            eventHandler: handleCancelDiection
+        },
+    ]
+    const record = useMemo(() => {
+        const { record_id, collection_point_ref: { customer_ref, waste_collector_ref, lattitude, longitude }, collection_date, ...rest } = data
+        const timestamp = new Date(collection_date);
+        rest.raised_by = customer_ref
+        rest.recieved_by = waste_collector_ref
+        rest.collection_date = timestamp.toLocaleDateString();
+        rest.id = record_id;
+        return rest;
+    }, [data]);
 
 
 
     return (
         <div className='h-full w-full'>
-            {/* <div className='h-80 grid grid-cols-5'>
-                <div className='col-span-3'>
+            <div className='md:mb-2 h-full md:h-96 md:grid md:grid-cols-5'>
+                <div className='h-60 md:h-full md:col-span-3'>
                     <MapLoader>
-                        <DirectionMap InfoDescription={InfoDescription} actions={actions} srcCoordinates={srcCoordinates} destCoordinates={data ? { latitude: data?.lattitude || data?.latitude, longitude: data?.longitude } : null} className={"h-full w-full"} />
+                        <DirectionMap InfoDescription={InfoDescription} actions={actions} srcCoordinates={srcCoordinates} destCoordinates={data?.collection_point_ref ? { latitude: data?.collection_point_ref?.lattitude || data?.collection_point_ref?.latitude, longitude: data?.collection_point_ref?.longitude } : null} className={"h-full w-full"} />
                     </MapLoader>
                 </div>
-                <div className='col-span-2'>
-                    <InfoContainer data={order} />
+                <div className='md:col-span-2 md:h-full'>
+                    <InfoContainer data={record} />
                 </div>
-            </div> */}
-            <div className='w-full h-full'>
+            </div>
+            <div className='w-full flex flex-col justify-start items-center dark:bg-slate-900'>
+                <h1 className='text-lg font-extrabold flex items-center justify-center text-slate-950 dark:text-slate-300 m-3'>
+                    ITEMS
+                </h1>
                 <GridView data={itemList} />
             </div>
 

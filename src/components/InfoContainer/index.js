@@ -76,9 +76,9 @@ const InfoContainer = ({ data, renderExtraButtons }) => {
   }, []);
 
   return (
-    <div className="p-4 bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-white rounded-md shadow-md sm:shadow-lg">
+    <div className="p-4 bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-white rounded-md shadow-md sm:shadow-lg h-full">
       <h2 className="text-xl font-bold mb-4">Information Container</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {Object.entries(data).map(([key, value]) => (
           <div key={key} className="mb-4">
             <p className="text-sm font-semibold mb-1">{_.startCase(key).toUpperCase()}</p>
