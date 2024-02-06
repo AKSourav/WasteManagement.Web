@@ -172,7 +172,7 @@ const WasteForm = ({ id }) => {
 
       const { data } = await apiClient.post(`/api/records/${id}/`, postData);
       console.log("CloudData:", data);
-      router.push('/dashoard/orders');
+      router.push('/dashboard/orders');
     } catch (error) {
       console.log(error);
     }
