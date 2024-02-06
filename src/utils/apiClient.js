@@ -2,7 +2,7 @@
 import Cookies from 'universal-cookie';
 import axios from "axios";
 
-const apiClient = axios.create({ baseURL: "http://localhost:8000" });
+const apiClient = axios.create({ baseURL: process.env.NEXT_PUBLIC_API });
 const cookies = new Cookies();
 
 let isRefreshing = false;
@@ -45,7 +45,7 @@ apiClient.interceptors.response.use(
     console.error('Interceptor error:', error);
     const originalRequest = error.config;
 
-    if (error.response.status === 401 && originalRequest && !originalRequest._isRetry && originalRequest.url!=="/api/token/refresh/") {
+    if (error.response.status === 401 && originalRequest && !originalRequest._isRetry && originalRequest.url !== "/api/token/refresh/") {
       originalRequest._isRetry = true;
 
       if (!isRefreshing) {
@@ -67,8 +67,7 @@ apiClient.interceptors.response.use(
             processQueue(null, data.access);
             return apiClient.request(originalRequest);
           }
-          else
-          {
+          else {
             throw new Error('refresh Token is not present!')
           }
         } catch (err) {
@@ -87,7 +86,7 @@ apiClient.interceptors.response.use(
       } else {
         // Queue the failed request for later retry
         const retryPromise = new Promise((resolve, reject) => {
-          failedQueue.push({ resolve, reject , originalRequest });
+          failedQueue.push({ resolve, reject, originalRequest });
         });
         return retryPromise;
       }
