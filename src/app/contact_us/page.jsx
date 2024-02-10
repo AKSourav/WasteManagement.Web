@@ -40,7 +40,7 @@ const Contact = () => {
         <>
 
             <div style={{
-                margin: 0,
+                marginTop: '90px',
                 padding: 0,
                 fontFamily: 'Arial, sans-serif',
                 background: 'url("https://media.istockphoto.com/id/537389722/photo/tropical-rainforest.jpg?s=2048x2048&w=is&k=20&c=nwhXE1q4WwzCVfmcWCh8A1yyxDpVAOHSdyCdl58OxTs=") no-repeat center center fixed',
@@ -71,7 +71,7 @@ const Contact = () => {
             <div className="container get-touch mt-4 ">
                 <div className="row">
                     <h3>Get Touch With Us</h3>
-                    <div><Image src={separatorImage} alt="seperator" /></div>
+                    <div className="separatorImage"><Image src={separatorImage} alt="seperator" /></div>
 
                     <p>Don’t hestiate to ask us something, Our customer support team always ready to help you,
                         they will support you 24/7.</p>

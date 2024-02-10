@@ -89,7 +89,7 @@ const Navbar = (props) => {
           </div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex lg:flex space-x-4 text-slate-600 dark:text-white items-center">
+          <div className="hidden md:flex lg:flex space-x-4 text-slate-600 dark:text-white items-center" style={{textDecoration:"none"}}>
             <Link href="/" className="hover:text-slate-900 hover:dark:text-purple-200">Home</Link>
             <Link href="/map" className="hover:text-slate-900 hover:dark:text-purple-200">Map</Link>
             <Link href="/about" className="hover:text-slate-900 hover:dark:text-purple-200">About</Link>
@@ -103,8 +103,8 @@ const Navbar = (props) => {
 
         {/* Mobile Menu */}
         {isOpen && (
-          <div className="mid:hidden lg:hidden text-black dark:text-white"  id="NavDiv">
-            <div className="flex flex-col items-center" style={{Color:"pink"}}>
+          <div className="mid:hidden lg:hidden text-black dark:text-white" >
+            <div className="flex flex-col items-center">
               <Link href="/" className="hover:text-gray-950 py-2 hover:dark:text-purple-200">Home</Link>
               <Link href="/about" className="hover:text-gray-950 py-2 hover:dark:text-purple-200">About</Link>
               <Link href="/dashboard" className="hover:text-gray-950 py-2 hover:dark:text-purple-200">Dashboard</Link>

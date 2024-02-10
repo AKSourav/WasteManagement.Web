@@ -1,3 +1,9 @@
+.separatorImage{
+  display: flex;
+  justify-content: center;
+}
+
+
 .get-touch{
     text-align: center;
 }

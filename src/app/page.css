@@ -18,6 +18,9 @@ body {
   font-family: 'Arial', sans-serif;
 }
 
+a{
+  text-decoration: none;
+}
 .shadow-img{
   background: url("https://media.istockphoto.com/id/537389722/photo/tropical-rainforest.jpg?s=2048x2048&w=is&k=20&c=nwhXE1q4WwzCVfmcWCh8A1yyxDpVAOHSdyCdl58OxTs=") center/cover no-repeat fixed;
   color: #fff;

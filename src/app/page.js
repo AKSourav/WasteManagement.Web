@@ -1,8 +1,8 @@
 // pages/index.js
 import React from 'react';
 import separatorImage from '@/web_image/seperater-blue.png';
-import '../app/page.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import '../app/page.css'
 import Image from 'next/image';
 import Footer from '@/components/Footer';
 
