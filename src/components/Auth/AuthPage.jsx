@@ -15,7 +15,7 @@ const AuthPage = ({className}) => {
       <div className="flex mb-4">
         <button
           className={`rounded flex-1 py-2 text-center ${
-            activeTab === 'login' ? 'bg-green-500 text-white' : 'bg-gray-300'
+            activeTab === 'login' ? 'bg-green-500 text-white' : 'bg-gray-300 text-black'
           }`}
           onClick={() => handleTabChange('login')}
         >
@@ -23,7 +23,7 @@ const AuthPage = ({className}) => {
         </button>
         <button
           className={` rounded flex-1 py-2 text-center ${
-            activeTab === 'signup' ? 'bg-green-500 text-white' : 'bg-gray-300'
+            activeTab === 'signup' ? 'bg-green-500 text-white' : 'bg-gray-300 text-black'
           }`}
           onClick={() => handleTabChange('signup')}
         >

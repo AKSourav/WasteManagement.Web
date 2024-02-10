@@ -17,7 +17,9 @@
 }
 
 body {
-  
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 /* styles.css or your styles file */
@@ -48,4 +50,10 @@ body {
 /* Active state effect */
 .glossy-button:active {
   transform: translateY(2px);
+}
+
+
+#NavDiv a{
+  text-decoration: none;
+  color: white;
 }

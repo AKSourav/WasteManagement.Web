@@ -56,7 +56,8 @@ const Navbar = (props) => {
         <div className="container mx-auto flex items-center justify-between">
           <div className="flex items-center">
             <Link href="/" className="text-slate-600 dark:text-white font-bold text-lg">
-              Your Logo
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTXvmLn7mps-xlaWIf8U-CIAd8AiQony73Mg&usqp=CAU" alt="Avatar Logo" style={{ width: '50px' }} className="rounded-pill" />
+
             </Link>
             <Image
               className='m-2 cursor-pointer'
@@ -94,7 +95,7 @@ const Navbar = (props) => {
             <Link href="/about" className="hover:text-slate-900 hover:dark:text-purple-200">About</Link>
             <Link href="/services" className="hover:text-slate-900 hover:dark:text-purple-200">Services</Link>
             {isAuthenticated && <Link href="/dashboard" className="hover:text-slate-900 hover:dark:text-purple-200">Dashboard</Link>}
-            <Link href="/contact" className="hover:text-slate-900 hover:dark:text-purple-200">Contact</Link>
+            <Link href="/contact_us" className="hover:text-slate-900 hover:dark:text-purple-200">Contact</Link>
             {!isAuthenticated && <button onClick={() => router.replace(`/auth`)} className="hover:text-gray- bg-green-400 p-2 rounded-md">SignIn</button>}
             {isAuthenticated && <ProfileAvatar user={user} onLogout={() => dispatch(setLogout())} />}
           </div>
@@ -102,8 +103,8 @@ const Navbar = (props) => {
 
         {/* Mobile Menu */}
         {isOpen && (
-          <div className="mid:hidden lg:hidden text-black dark:text-white">
-            <div className="flex flex-col items-center">
+          <div className="mid:hidden lg:hidden text-black dark:text-white"  id="NavDiv">
+            <div className="flex flex-col items-center" style={{Color:"pink"}}>
               <Link href="/" className="hover:text-gray-950 py-2 hover:dark:text-purple-200">Home</Link>
               <Link href="/about" className="hover:text-gray-950 py-2 hover:dark:text-purple-200">About</Link>
               <Link href="/dashboard" className="hover:text-gray-950 py-2 hover:dark:text-purple-200">Dashboard</Link>
