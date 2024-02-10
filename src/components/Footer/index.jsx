@@ -1,5 +1,10 @@
 import React from 'react'
 import "./index.css"
+import phone from '@/web_image/phone.png';
+import location from '@/web_image/location.png';
+import mail from '@/web_image/mail.png';
+import Image from 'next/image';
+
 const Footer = (user) => {
 
   return (
@@ -51,7 +56,7 @@ const Footer = (user) => {
             <div className="col-md-4 ">
               <div className="d-flex p-3 text-white" >
                 <div className="p-1">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTXvmLn7mps-xlaWIf8U-CIAd8AiQony73Mg&usqp=CAU" alt="Avatar Logo" style={{ width: '40px' }} className="rounded-pill" />
+                    <Image  src={mail} alt="mail" style={{ width: '50px' }}  />
                 </div>
                 <div className="p-1" >
                   <h3>Email</h3>
@@ -62,7 +67,10 @@ const Footer = (user) => {
 
             <div className="col-md-4 ">
               <div className="d-flex p-3 text-white">
-                <div className="p-1"> <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTXvmLn7mps-xlaWIf8U-CIAd8AiQony73Mg&usqp=CAU" alt="Avatar Logo" style={{ width: '40px' }} className="rounded-pill" /></div>
+                <div className="p-1"> 
+                <Image  src={location} alt="location" style={{ width: '40px' }} className="rounded-pill" />
+
+                </div>
                 <div className="p-1" >
                   <h3>Address</h3>
                   <p>Near Big Bazar, Dhanbad</p>
@@ -72,7 +80,9 @@ const Footer = (user) => {
 
             <div className="col-md-4 ">
               <div className="d-flex p-3 text-white">
-                <div className="p-1"> <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTXvmLn7mps-xlaWIf8U-CIAd8AiQony73Mg&usqp=CAU" alt="Avatar Logo" style={{ width: '40px' }} className="rounded-pill" /></div>
+                <div className="p-1"> 
+                <Image  src={phone} alt="phone" style={{ width: '40px' }} />
+                </div>
                 <div className="p-1">
                   <h3>Call Us On</h3>
                   <p>Front Desk:7481009993</p>
