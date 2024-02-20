@@ -1,6 +1,7 @@
 "use client"
 import { useToast } from '@/utils/RefreshWrapper/Wrapper';
 import { register } from '@/utils/redux/features/authSlice';
+import Link from 'next/link';
 import React, { useState } from 'react';
 import {useDispatch} from 'react-redux'
 
@@ -92,7 +93,7 @@ const SignUpTab = () => {
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div>
-            <label htmlFor="firstName" className="block text-sm font-medium text-gray-600 dark:text-white">
+            <label htmlFor="firstName" className="block text-sm font-medium text-black dark:text-white">
               First Name
             </label>
             <input
@@ -105,7 +106,7 @@ const SignUpTab = () => {
             />
           </div>
           <div>
-            <label htmlFor="lastName" className="block text-sm font-medium text-gray-600 dark:text-white">
+            <label htmlFor="lastName" className="block text-sm font-medium text-black dark:text-white">
               Last Name
             </label>
             <input
@@ -119,7 +120,7 @@ const SignUpTab = () => {
           </div>
         </div>
         <div className="mb-4">
-          <label htmlFor="phone" className="block text-sm font-medium text-gray-600 dark:text-white">
+          <label htmlFor="phone" className="block text-sm font-medium text-black dark:text-white">
             Phone
           </label>
           <input
@@ -132,7 +133,7 @@ const SignUpTab = () => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="email" className="block text-sm font-medium text-gray-600 dark:text-white">
+          <label htmlFor="email" className="block text-sm font-medium text-black dark:text-white">
             Email
           </label>
           <input
@@ -145,7 +146,7 @@ const SignUpTab = () => {
           />
         </div>
         <div className="mb-4 relative">
-          <label htmlFor="password" className="block text-sm font-medium text-gray-600 dark:text-white">
+          <label htmlFor="password" className="block text-sm font-medium text-black dark:text-white">
             Password
           </label>
           <input
@@ -165,7 +166,7 @@ const SignUpTab = () => {
           </button>
         </div>
         <div className="mb-4">
-          <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-600 dark:text-white">
+          <label htmlFor="confirmPassword" className="block text-sm font-medium text-black dark:text-white">
             Confirm Password
           </label>
           <input
@@ -178,7 +179,7 @@ const SignUpTab = () => {
           />
         </div>
         {/* <div className="mb-4">
-          <label htmlFor="accountType" className="block text-sm font-medium text-gray-600 dark:text-white">
+          <label htmlFor="accountType" className="block text-sm font-medium text-black dark:text-white">
             Account Type
           </label>
           <select
@@ -193,6 +194,12 @@ const SignUpTab = () => {
             <option value="business">Business</option>
           </select>
         </div> */}
+
+      <div className="form-check mt-3">
+        <input className="form-check-input" type="checkbox" id="check1" name="option1" value="something"  />
+        <label className="form-check-label text-black dark:text-white" htmlFor="check1">I agree to these <span>Term & condition</span> </label>
+       </div>
+      
         <div className='flex justify-center items-center'>
           <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md">
             Sign Up
