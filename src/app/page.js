@@ -22,8 +22,8 @@ const Home = () => {
       <div className="container welcome mt-4">
         <h2>Welcome to</h2>
         <div className="separatorImage"><Image src={separatorImage} alt="hamburger" /></div>
-        <p>If you're looking for a reliable partner to help you grow your business, look no further than Waste
-          right solution, please find our services.</p>
+        {<p>If you&apos; re looking for a reliable partner to help you grow your business, look no further than Waste
+          right solution, please find our services.</p>}
       </div>
       <div className="container section-intro">
         <h2>Recycling Programs</h2>
@@ -131,7 +131,7 @@ const Home = () => {
         <div className="separatorImage"><Image src={separatorImage} alt="hamburger" /></div>
 
         {/* <p>Efficient and reliable waste collection services tailored to your needs.</p> */}
-        <p>Welcome to our Waste Collection Services, where efficiency and reliability meet your unique needs. Our tailored waste management solutions ensure a seamless and eco-friendly disposal process. Whether you're a household or a business, we prioritize efficiency in collecting various types of waste to contribute to a cleaner environment. Our dedicated team is committed to providing reliable services that align with your specific requirements. Experience the convenience of waste disposal without compromising on sustainability. Join us in creating a waste-free future where our efficient waste collection services make a positive impact on both your surroundings and the planet.</p>
+        {<p>Welcome to our Waste Collection Services, where efficiency and reliability meet your unique needs.Our tailored waste management solutions ensure a seamless and eco-friendly disposal process.Whether you&apos;re a household or a business, we prioritize efficiency in collecting various types of waste to contribute to a cleaner environment. Our dedicated team is committed to providing reliable services that align with your specific requirements. Experience the convenience of waste disposal without compromising on sustainability. Join us in creating a waste-free future where our efficient waste collection services make a positive impact on both your surroundings and the planet.</p>}
       </div>
 
       <section className="container-fluid mt-5 cta">
