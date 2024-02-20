@@ -51,7 +51,7 @@ const Footer = (user) => {
           </div>
         </div>
 
-        <div className="container footer-middle">
+        {/* <div className="container footer-middle">
           <div className="row">
             <div className="col-md-4 ">
               <div className="d-flex p-3 text-white" >
@@ -91,10 +91,10 @@ const Footer = (user) => {
             </div>
 
           </div>
-        </div>
+        </div> */}
 
         {/* Bottom footer */}
-        < div className="container-fluid footer-bottom pt-4 px-4" >
+        {/* < div className="container-fluid footer-bottom pt-4 px-4" >
           <div className="rounded-top p-4">
             <div className="row">
               <div className="col-12 col-sm-6 text-center text-sm-start">Copyright
@@ -102,11 +102,10 @@ const Footer = (user) => {
               </div>
               <div className="col-12 col-sm-6 text-center text-sm-end">
                 Designed By <a href="https://github.com/AnupMandal0505">Anurag Kumar </a> <span>&</span> <a href="https://github.com/AKSourav">Anupam Kumar Sourav</a>
-                {/* <br />Distributed By: <a href="" target="_blank">Anupam</a> */}
               </div>
             </div>
           </div>
-        </div >
+        </div > */}
       </footer >
 
     </div>

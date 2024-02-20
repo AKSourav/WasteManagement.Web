@@ -1,5 +1,5 @@
-// pages/index.js
 import React from 'react';
+import Link from 'next/link';
 import separatorImage from '@/web_image/seperater-blue.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../app/page.css'
@@ -9,15 +9,15 @@ import Footer from '@/components/Footer';
 const Home = () => {
   return (
     <>
-    <div className="container-fluid contain">
+      <div className="container-fluid contain">
         <div className="shadow-img">
           <div className="contain-bodys">
             <h5 className="contain-titles">Environmental Awareness</h5>
             <p className="contain-texts">Educational initiatives to raise awareness about the importance of waste management.</p>
-            <a href="#" className="btn btn-primary">Go somewhere</a>
+            <Link href="/about" className="btn btn-primary">Go somewhere</Link>
           </div>
         </div>
-      </div> 
+      </div>
 
       <div className="container welcome mt-4">
         <h2>Welcome to</h2>
@@ -27,14 +27,14 @@ const Home = () => {
       </div>
       <div className="container section-intro">
         <h2>Recycling Programs</h2>
-        <div className="separatorImage"><Image  src={separatorImage} alt="hamburger" /></div>
+        <div className="separatorImage"><Image src={separatorImage} alt="hamburger" /></div>
 
         <p>Join our recycling programs to reduce waste and promote sustainability.</p>
         <hr />
-      </div>  
-      
-      
-      
+      </div>
+
+
+
       <div className="container program-features">
         <div className="row">
           <div className="col-md-6 mb-4">
@@ -75,10 +75,12 @@ const Home = () => {
 
       <div className="container mb-5 get-involved">
         <h2>How to Get Involved</h2>
-        <div className="separatorImage"><Image  src={separatorImage} alt="hamburger" /></div>
+        <div className="separatorImage"><Image src={separatorImage} alt="hamburger" /></div>
 
         <p>Ready to make a positive change? Sign up for our recycling programs now.</p>
-        <button className='mb-5'>Join Now</button>
+        <Link href={'/auth'}>
+          <button className='mb-5'>Join Now</button>
+        </Link>
       </div>
 
       <div className="container-fluid  testimonials mt-5 mb-5">
@@ -111,9 +113,9 @@ const Home = () => {
           </div>
         </div>
       </div>
-      
 
-      
+
+
       <div className="container stay-connected mt-4">
         <h2>Stay Connected</h2>
         <div className="separatorImage"><Image src={separatorImage} alt="hamburger" /></div>
@@ -135,17 +137,17 @@ const Home = () => {
       <section className="container-fluid mt-5 cta">
         <h2>Start Making a Difference Today</h2>
         <p>Explore our services and join us in creating a cleaner and greener world.</p>
-        <a className='btn btn-success'>Get Started</a>
+        <a href='/dashboard' className='btn btn-success'>Get Started</a>
       </section>
 
 
 
 
-     <Footer/>
+      <Footer />
 
 
 
-        </>
+    </>
   );
 };
 
