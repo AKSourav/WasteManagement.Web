@@ -85,7 +85,7 @@ const InfoContainer = ({ data, renderExtraButtons }) => {
             <p
               className="text-base overflow-hidden tooltip"
               title={value}
-              style={{ whiteSpace: 'nowrap' }}
+              style={{ whiteSpace: 'nowrap', display: "contents" }}
             >
               {truncateText(value, 15) || "NULL"}
             </p>
