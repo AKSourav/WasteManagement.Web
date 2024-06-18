@@ -1,0 +1,3 @@
+[submodule "WasteManagement.API"]
+	path = WasteManagement.API
+	url = https://github.com/AKSourav/WasteManagement.API.git

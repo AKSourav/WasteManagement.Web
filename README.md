@@ -47,6 +47,13 @@ WasteTrade offers a comprehensive solution to these challenges:
     docker-compose up
     ```
 
+### WEBSITE
+
+![Fill Address](assets/FillAddress.png)
+![Place Order](assets/PlaceOrder.png)
+![Order Information](assets/OrderInformation.png)
+![Direction](assets/Direction.png)
+
 ### Usage
 
 1. Register an account or log in.

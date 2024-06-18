@@ -1,0 +1,14 @@
+services:
+  backend:
+    build:
+      context: "./WasteManagement.API"
+      dockerfile: Dockerfile
+    # env_file:
+    #   - "./env.api"
+  server:
+    build:
+      context: "."
+      dockerfile: Dockerfile
+    env_file:
+      - "./env.web"
+  
