@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# WasteTrade
+
+## Overview
+
+WasteTrade is an innovative application designed to streamline the process of trading recyclable materials. It connects customers with waste collectors through a user-friendly interface, integrated maps, and an efficient matching system. The goal is to promote recycling, reduce waste, and contribute to environmental sustainability.
+
+## Problem Statement
+
+In the current landscape, trading recyclable materials is fraught with inefficiencies and inconveniences. Customers struggle to find reliable waste collectors and arrange pickups, while collectors face challenges in locating and coordinating with potential customers. This disconnect leads to missed recycling opportunities, increased waste, and negative environmental impacts.
+
+## Solution
+
+WasteTrade offers a comprehensive solution to these challenges:
+
+1. **User-Friendly Interface**: Simplifies the process for customers to list and sell recyclable materials.
+2. **Integrated Maps and Directions**: Provides accurate location pinpointing with 95% accuracy, making it easy for waste collectors to reach the pickup locations.
+3. **Efficient Matching System**: Connects customers with local waste collectors, ensuring timely and efficient pickups.
+4. **Environmental Impact**: Encourages recycling, reduces waste, and supports sustainable practices.
+
+## Features
+
+- **List Recyclable Materials**: Customers can easily list metals, plastics, wood, and other recyclable materials for sale.
+- **Integrated Mapping**: Accurate maps and directions for pinpointing preferred pickup locations.
+- **Matchmaking System**: Efficiently matches customers with nearby waste collectors.
+- **User Notifications**: Real-time updates and notifications for both customers and collectors regarding the status of pickups.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Django
+- NextJs
+- BingMaps
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+1. Clone the repository:
+    ```sh
+    git clone https://github.com/AKSourav/WasteManagement.Web.git
+    ```
+2. Navigate to the project directory:
+    ```sh
+    cd WasteManagement.Web
+    ```
+3. Run Docker Compose:
+    ```sh
+    docker-compose up
+    ```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Usage
 
-## Learn More
+1. Register an account or log in.
+2. List your recyclable materials or browse available listings.
+3. Use the integrated map to specify your preferred pickup location.
+4. Receive notifications and updates on the status of your pickup.
 
-To learn more about Next.js, take a look at the following resources:
+## Links
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- [GitHub Repository](https://github.com/AKSourav/WasteManagement.Web)
+- [Website](wastemanagementweb.onrender.com/)
