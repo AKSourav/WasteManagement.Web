@@ -1,8 +1,8 @@
-# WasteTrade
+# ScrapTrade
 
 ## Overview
 
-WasteTrade is an innovative application designed to streamline the process of trading recyclable materials. It connects customers with waste collectors through a user-friendly interface, integrated maps, and an efficient matching system. The goal is to promote recycling, reduce waste, and contribute to environmental sustainability.
+ScrapTrade is an innovative application designed to streamline the process of trading recyclable materials. It connects customers with waste collectors through a user-friendly interface, integrated maps, and an efficient matching system. The goal is to promote recycling, reduce waste, and contribute to environmental sustainability.
 
 ## Problem Statement
 
@@ -10,7 +10,7 @@ In the current landscape, trading recyclable materials is fraught with inefficie
 
 ## Solution
 
-WasteTrade offers a comprehensive solution to these challenges:
+ScrapTrade offers a comprehensive solution to these challenges:
 
 1. **User-Friendly Interface**: Simplifies the process for customers to list and sell recyclable materials.
 2. **Integrated Maps and Directions**: Provides accurate location pinpointing with 95% accuracy, making it easy for waste collectors to reach the pickup locations.
@@ -64,4 +64,4 @@ WasteTrade offers a comprehensive solution to these challenges:
 ## Links
 
 - [GitHub Repository](https://github.com/AKSourav/WasteManagement.Web)
-- [Website](wastemanagementweb.onrender.com/)
+- [Website](https://wastemanagementweb.onrender.com/)
